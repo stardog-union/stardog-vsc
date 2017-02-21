@@ -1,0 +1,39 @@
+{
+  "name": "stardog-query-runner",
+  "displayName": "Stardog Query Runner",
+  "description": "TBD",
+  "version": "0.0.1",
+  "publisher": "stardog",
+  "engines": {
+    "vscode": "^1.5.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.sayHello"
+  ],
+  "main": "./extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.sayHello",
+        "title": "Hello World"
+      }
+    ]
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "@types/mocha": "2.2.32",
+    "@types/node": "6.0.40",
+    "eslint": "3.16.0",
+    "eslint-config-airbnb-base": "11.1.0",
+    "eslint-plugin-import": "2.2.0",
+    "mocha": "2.3.3",
+    "typescript": "2.0.3",
+    "vscode": "1.0.0"
+  }
+}
