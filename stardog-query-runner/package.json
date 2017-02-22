@@ -11,16 +11,30 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.sayHello"
+    "*"
   ],
   "main": "./extension",
   "contributes": {
-    "commands": [
-      {
-        "command": "extension.sayHello",
-        "title": "Hello World"
+    "configuration": {
+      "title": "Stardog Query Runner Settings",
+      "properties": {
+        "stardog.endpoint": {
+          "type": "string",
+          "default": null,
+          "description": "Database endpoint to query."
+        },
+        "stardog.username": {
+          "type": "string",
+          "default": null,
+          "description": "User name to authenticate to the database."
+        },
+        "stardog.password": {
+          "type": "string",
+          "default": null,
+          "description": "Password to use to authenticate to the database."
+        }
       }
-    ]
+    }
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
@@ -33,6 +47,7 @@
     "eslint-config-airbnb-base": "11.1.0",
     "eslint-plugin-import": "2.2.0",
     "mocha": "2.3.3",
+    "must": "0.13.4",
     "typescript": "2.0.3",
     "vscode": "1.0.0"
   }
