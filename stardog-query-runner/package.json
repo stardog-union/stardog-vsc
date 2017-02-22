@@ -15,6 +15,12 @@
   ],
   "main": "./extension",
   "contributes": {
+    "commands": [
+      {
+        "command": "stardog-query-runner.sendQuery",
+        "title": "Execute query"
+      }
+    ],
     "configuration": {
       "title": "Stardog Query Runner Settings",
       "properties": {
@@ -28,12 +34,24 @@
           "default": null,
           "description": "User name to authenticate to the database."
         },
+        "stardog.database": {
+          "type": "string",
+          "default": null,
+          "description": "Database name to query."
+        },
         "stardog.password": {
           "type": "string",
           "default": null,
           "description": "Password to use to authenticate to the database."
         }
       }
+    },
+    "menus": {
+      "editor/title": [
+        {
+          "command": "stardog-query-runner.sendQuery"
+        }
+      ]
     }
   },
   "scripts": {
@@ -48,7 +66,11 @@
     "eslint-plugin-import": "2.2.0",
     "mocha": "2.3.3",
     "must": "0.13.4",
+    "simple-mock": "0.7.3",
     "typescript": "2.0.3",
     "vscode": "1.0.0"
+  },
+  "dependencies": {
+    "stardog": "0.3.1"
   }
 }
