@@ -3,11 +3,58 @@ const vscode = require('vscode');
 
 const { log } = require('./lib/log');
 
-const { window, workspace, commands } = vscode;
+const { window, workspace, commands, Uri } = vscode;
 
 const { Connection } = require('stardog');
 
 const CONFIG_SECTION = 'stardog';
+const CSS = `
+  table {
+    width: 100%;
+    background-color: #ffffff;
+    color: #000000;
+  }
+  tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+  }
+`;
+
+class ResultProvider {
+  constructor() {
+    this.columns = null;
+    this.values = null;
+  }
+  setData(columns, values) {
+    Object.assign(this, { columns, values });
+  }
+  provideTextDocumentContent() {
+    const html = `
+      <html>
+        <body>
+          <style>
+            ${CSS}
+          </style>
+          <table id="results">
+            <thead>
+              <tr>
+                ${this.columns.map(c => `<th>${c}</td>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${this.values.map(v =>
+                `<tr>
+                  ${this.columns.map(c => `<td>${v[c].value}</td>`).join('')}
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `;
+
+    return html;
+  }
+}
+
 
 // We want to keep a handle to this in case we ever need to
 // dispose of the old one, and add a new one in it's place
@@ -43,7 +90,7 @@ const buildConnection = (config = {}) => {
   return conn;
 };
 
-const sendQuery = (win, conn, database) => {
+const sendQuery = (win, conn, database, provider) => {
   const editor = win.activeTextEditor;
   if (!editor || !conn) { return; }
 
@@ -54,8 +101,13 @@ const sendQuery = (win, conn, database) => {
     query,
     database,
   }, (body) => {
-    if (body.results) {
-      win.showInformationMessage(`We got ${body.results.bindings.length} bindings back.`);
+    if (body && body.results) {
+      provider.setData(body.head.vars, body.results.bindings);
+      const uri = Uri.parse(`stardog-results://${database}/results`);
+      commands.executeCommand('vscode.previewHtml', uri, vscode.ViewColumn.One, 'Query Results')
+      .then(() => {}, (reason) => {
+        window.showErrorMessage(reason);
+      });
     } else {
       win.showErrorMessage(body);
     }
@@ -64,9 +116,12 @@ const sendQuery = (win, conn, database) => {
 
 // this method is called when your extension is activated
 const activate = (context) => {
-  log('Congratulations, your extension "stardog-query-runner" is now active!');
+  log('stardog-query-runner is active!');
   const config = workspace.getConfiguration(CONFIG_SECTION);
   const errors = validateSettings(config);
+
+  const resultProvider = new ResultProvider();
+  const registration = workspace.registerTextDocumentContentProvider('stardog-results', resultProvider);
 
   if (errors) {
     window.showErrorMessage(`Missing required setting${errors.length > 1 ? '(s)' : ''}: [${errors.join(', ')}]`, 'Open "settings.json"').then(() => {
@@ -78,10 +133,10 @@ const activate = (context) => {
     // This is to prevent errors from happening on menu items and pallet commands
     onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => {});
   } else {
-    onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => sendQuery(window, buildConnection(config), config.database));
+    onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => sendQuery(window, buildConnection(config), config.database, resultProvider));
   }
 
-  context.subscriptions.push(onSendQuery);
+  context.subscriptions.push(onSendQuery, registration);
 };
 
 // this method is called when your extension is deactivated
@@ -94,4 +149,5 @@ module.exports = {
   deactivate,
   sendQuery,
   validateSettings,
+  ResultProvider,
 };
