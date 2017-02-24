@@ -3,10 +3,12 @@
 const expect = require('must');
 
 // eslint-disable-next-line import/no-extraneous-dependencies, import/no-unresolved
-const { commands } = require('vscode');
+const { workspace, window, commands } = require('vscode');
 const { Connection } = require('stardog');
-const { validateSettings, buildConnection, sendQuery, ResultProvider } = require('../extension');
+const extension = require('../extension');
 const simple = require('simple-mock');
+
+const { validateSettings, buildConnection, ResultProvider, activate, sendQuery } = extension;
 
 describe('stardog-query-runner extension', () => {
   afterEach(() => simple.restore());
@@ -171,5 +173,51 @@ describe('stardog-query-runner extension', () => {
     const args = commands.executeCommand.lastCall.args;
     expect(args[0]).to.equal('vscode.previewHtml');
     expect(args[1].toString()).to.equal('stardog-results://mydb/results');
+  });
+
+  describe('activate', () => {
+    const pluginContext = () => ({
+      subscriptions: {
+        push: simple.mock(),
+      },
+    });
+    afterEach(() => simple.restore());
+    it('shows an error message if there are issues with the settings', () => {
+      const context = pluginContext();
+      simple.mock(commands, 'registerCommand').returnWith(undefined);
+      simple.mock(workspace, 'getConfiguration').returnWith(undefined);
+      simple.mock(window, 'showErrorMessage').resolveWith(null);
+      activate(context);
+      expect(window.showErrorMessage.called).to.be.true();
+    });
+
+    it('creates the command even if there is an error', () => {
+      const context = pluginContext();
+      simple.mock(commands, 'registerCommand').returnWith(undefined);
+      simple.mock(workspace, 'getConfiguration').returnWith(undefined);
+      simple.mock(window, 'showErrorMessage').resolveWith(null);
+      activate(context);
+      expect(commands.registerCommand.lastCall.args[0]).to.eql('stardog-query-runner.sendQuery');
+      expect(context.subscriptions.push.called).to.be.true();
+    });
+
+    it('creates the command that will call sendQuery', () => {
+      const context = pluginContext();
+      simple.mock(commands, 'registerCommand').returnWith(undefined);
+      simple.mock(workspace, 'getConfiguration').returnWith({
+        password: 'password',
+        endpoint: 'endpoint',
+        username: 'username',
+        database: 'database',
+      });
+      simple.mock(extension, 'sendQuery').returnWith(undefined);
+      activate(context);
+      expect(commands.registerCommand.lastCall.args[0]).to.eql('stardog-query-runner.sendQuery');
+      const onSendQuery = commands.registerCommand.lastCall.args[1];
+      onSendQuery();
+      expect(extension.sendQuery.called).to.be.true();
+      expect(extension.sendQuery.lastCall.args).to.have.length(4);
+      expect(context.subscriptions.push.called).to.be.true();
+    });
   });
 });

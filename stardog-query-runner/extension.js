@@ -136,9 +136,9 @@ const sendQuery = (win, conn, database, provider) => {
 const activate = (context) => {
   log('stardog-query-runner is active!');
   const config = workspace.getConfiguration(CONFIG_SECTION);
-  const errors = validateSettings(config);
+  const errors = exports.validateSettings(config);
 
-  const resultProvider = new ResultProvider();
+  const resultProvider = new exports.ResultProvider();
   const registration = workspace.registerTextDocumentContentProvider('stardog-results', resultProvider);
 
   if (errors) {
@@ -151,7 +151,8 @@ const activate = (context) => {
     // This is to prevent errors from happening on menu items and pallet commands
     onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => {});
   } else {
-    onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => sendQuery(window, buildConnection(config), config.database, resultProvider));
+    onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () =>
+      exports.sendQuery(window, exports.buildConnection(config), config.database, resultProvider));
   }
 
   context.subscriptions.push(onSendQuery, registration);
@@ -161,11 +162,9 @@ const activate = (context) => {
 const deactivate = () => {
 };
 
-module.exports = {
-  activate,
-  buildConnection,
-  deactivate,
-  sendQuery,
-  validateSettings,
-  ResultProvider,
-};
+exports.activate = activate;
+exports.buildConnection = buildConnection;
+exports.deactivate = deactivate;
+exports.sendQuery = sendQuery;
+exports.validateSettings = validateSettings;
+exports.ResultProvider = ResultProvider;
