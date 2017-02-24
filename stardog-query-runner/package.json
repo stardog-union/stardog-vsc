@@ -3,7 +3,7 @@
   "displayName": "Stardog Query Runner",
   "description": "TBD",
   "version": "0.0.1",
-  "publisher": "stardog",
+  "publisher": "stardog-union",
   "engines": {
     "vscode": "^1.5.0"
   },
@@ -73,7 +73,7 @@
     "must": "0.13.4",
     "simple-mock": "0.7.3",
     "typescript": "2.0.3",
-    "vscode": "1.0.0"
+    "vscode": "1.0.5"
   },
   "dependencies": {
     "stardog": "0.3.1"
