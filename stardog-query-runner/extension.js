@@ -11,11 +11,31 @@ const CONFIG_SECTION = 'stardog';
 const CSS = `
   table {
     width: 100%;
-    background-color: #ffffff;
-    color: #000000;
+    border:0;
+    border-spacing: 0px;
+    border-collapse: collapse;
   }
-  tbody tr:nth-child(odd) {
-    background-color: #f2f2f2;
+  thead th {
+    padding: 10px;
+  }
+  .vscode-dark table {
+    color: #ffffff;
+  }
+  .vscode-dark tr:nth-child(odd) {
+    background-color: #333333;
+  }
+  .vscode-dark tbody tr:hover {
+    background-color: #e5e5e5
+  }
+
+  .vscode-light {
+    color: #000000
+  }
+  .vscode-light tr:nth-child(odd) {
+    background-color: #efefef;
+  }
+  .vscode-light tbody tr:hover {
+    background-color: #e5e5e5
   }
 `;
 
@@ -29,26 +49,24 @@ class ResultProvider {
   }
   provideTextDocumentContent() {
     const html = `
-      <html>
-        <body>
-          <style>
-            ${CSS}
-          </style>
-          <table id="results">
-            <thead>
-              <tr>
-                ${this.columns.map(c => `<th>${c}</td>`).join('')}
-              </tr>
-            </thead>
-            <tbody>
-              ${this.values.map(v =>
-                `<tr>
-                  ${this.columns.map(c => `<td>${v[c].value}</td>`).join('')}
-                </tr>`).join('')}
-            </tbody>
-          </table>
-        </body>
-      </html>
+      <style>
+        ${CSS}
+      </style>
+      <body>
+        <table id="results">
+          <thead>
+            <tr>
+              ${this.columns.map(c => `<th>${c}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${this.values.map(v =>
+              `<tr>
+                ${this.columns.map(c => `<td>${v[c].value}</td>`).join('')}
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </body>
     `;
 
     return html;
