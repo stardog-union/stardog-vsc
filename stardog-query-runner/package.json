@@ -18,7 +18,11 @@
     "commands": [
       {
         "command": "stardog-query-runner.sendQuery",
-        "title": "Execute query"
+        "title": "Execute query",
+        "icon": {
+          "dark": "./static/white.svg",
+          "light": "./static.black.svg"
+        }
       }
     ],
     "configuration": {
@@ -49,7 +53,8 @@
     "menus": {
       "editor/title": [
         {
-          "command": "stardog-query-runner.sendQuery"
+          "command": "stardog-query-runner.sendQuery",
+          "group": "navigation"
         }
       ]
     }
