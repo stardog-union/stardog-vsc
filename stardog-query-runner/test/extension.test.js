@@ -80,7 +80,7 @@ describe('stardog-query-runner extension', () => {
       expect(win.activeTextEditor.document.getText.called).to.be.false();
     });
 
-    it('sends the query from the window object', () => {
+    it('sends the entire text context if there is not any selected text', () => {
       const query = simple.mock();
       const conn = { query };
       const win = {
@@ -88,13 +88,43 @@ describe('stardog-query-runner extension', () => {
           document: {
             getText: simple.mock().returnWith(dbQuery),
           },
+          selection: {
+            isEmpty: true,
+          },
         },
       };
 
       sendQuery(win, conn, 'myDB', {});
       expect(query.called).to.be.true();
+      expect(win.activeTextEditor.document.getText.lastCall.args).to.eql([undefined]);
       expect(query.lastCall.args[0]).to.eql({
         query: dbQuery,
+        database: 'myDB',
+      });
+    });
+
+    it('sends the highlighted text is there is any', () => {
+      const query = simple.mock();
+      const conn = { query };
+      const selection = {
+        isEmpty: false,
+        start: 0,
+        end: 10,
+      };
+      const win = {
+        activeTextEditor: {
+          document: {
+            getText: simple.mock().returnWith(dbQuery.slice(selection.start, selection.end)),
+          },
+          selection,
+        },
+      };
+
+      sendQuery(win, conn, 'myDB', {});
+      expect(query.called).to.be.true();
+      expect(win.activeTextEditor.document.getText.lastCall.args).to.eql([selection]);
+      expect(query.lastCall.args[0]).to.eql({
+        query: dbQuery.slice(selection.start, selection.end),
         database: 'myDB',
       });
     });
@@ -107,6 +137,7 @@ describe('stardog-query-runner extension', () => {
           document: {
             getText: simple.mock(),
           },
+          selection: {},
         },
         showErrorMessage: simple.mock(),
       };
@@ -131,6 +162,7 @@ describe('stardog-query-runner extension', () => {
         document: {
           getText: simple.mock(),
         },
+        selection: {},
       },
       showErrorMessage: simple.mock(),
     };
@@ -163,6 +195,7 @@ describe('stardog-query-runner extension', () => {
         document: {
           getText: simple.mock(),
         },
+        selection: {},
       },
       showErrorMessage: simple.mock(),
     };
