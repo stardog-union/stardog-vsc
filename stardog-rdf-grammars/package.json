@@ -40,12 +40,12 @@
       {
         "language": "sparql",
         "scopeName": "source.sparql",
-        "path": "./syntaxes/sparql.tmLanguage"
+        "path": "./syntaxes/sparql.tmLanguage.json"
       },
       {
         "language": "turtle",
         "scopeName": "source.turtle",
-        "path": "./syntaxes/ttl.tmLanguage.json"
+        "path": "./syntaxes/turtle.tmLanguage.json"
       }
     ]
   }
