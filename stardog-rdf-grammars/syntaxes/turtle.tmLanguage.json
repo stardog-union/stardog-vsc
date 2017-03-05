@@ -1,0 +1,158 @@
+{
+  "fileTypes": [
+    "ttl"
+  ],
+  "patterns": [
+    {
+      "match": "(?:^|\\s+)(?:@base|BASE|@prefix|PREFIX)\\b",
+      "comment": "Keywords",
+      "name": "storage.modifier.turtle"
+    },
+    {
+      "match": "<[^<>\"{}|^`\\]\\\\]*>",
+      "comment": "URI",
+      "name": "string.uri.turtle"
+    },
+    {
+      "match": "((?:\\w(?:(?:\\w|-|[\\xB7\\x{0300}-\\x{036F}\\x{203F}-\\x{2040}]|\\.)*(?:\\w|-|[\\xB7\\x{0300}-\\x{036F}\\x{203F}-\\x{2040}]))?)?:)([^\\s|\/^*?+{}()]*)",
+      "captures": {
+        "1": {
+          "name": "entity.name.class.namespace.turtle"
+        },
+        "2": {
+          "name": "entity.name.tag.prefixed-uri.turtle"
+        }
+      },
+      "comment": "Prefix \/ prefixed URI",
+      "name": "storage.type.turtle"
+    },
+    {
+      "match": "\\sa\\s",
+      "comment": "The special triple predicate a",
+      "name": "variable.language.turtle"
+    },
+    {
+      "match": "(\"[^\"]*\")(\\^\\^)(<[^<>\"{}|^`\\]\\\\]*>|\\w*:[^\\s)]+)",
+      "captures": {
+        "3": {
+          "name": "support.type.turtle"
+        },
+        "1": {
+          "name": "string.turtle"
+        },
+        "2": {
+          "name": "keyword.operator.turtle"
+        }
+      },
+      "comment": "Typed literal",
+      "name": "literal.turtle"
+    },
+    {
+      "end": "(\"{3})(@[a-zA-Z-]+)?",
+      "begin": "(\"{3})",
+      "beginCaptures": {
+        "1": {
+          "name": "string.quoted.triple.turtle"
+        }
+      },
+      "patterns": [
+        {
+          "match": "((?:(?:\"{1,2})?(?:[^\"\\x5C]|\\\\[tbnrf\"'\\\\]))*)",
+          "captures": {
+            "1": {
+              "name": "string.quoted.triple.turtle"
+            }
+          }
+        }
+      ],
+      "comment": "String literal long quote",
+      "endCaptures": {
+        "1": {
+          "name": "string.quoted.triple.turtle"
+        },
+        "2": {
+          "name": "keyword.operator.turtle"
+        }
+      },
+      "name": "string-long-quote.turtle"
+    },
+    {
+      "end": "('{3})(@[a-zA-Z-]+)?",
+      "begin": "('{3})",
+      "beginCaptures": {
+        "1": {
+          "name": "string.quoted.triple.turtle"
+        }
+      },
+      "patterns": [
+        {
+          "match": "((?:(?:'{1,2})?(?:[^'\\x5C]|\\\\[tbnrf\"'\\\\]))*)",
+          "captures": {
+            "1": {
+              "name": "string.quoted.triple.turtle"
+            }
+          }
+        }
+      ],
+      "comment": "String literal long single quote",
+      "endCaptures": {
+        "1": {
+          "name": "string.quoted.triple.turtle"
+        },
+        "2": {
+          "name": "keyword.operator.turtle"
+        }
+      },
+      "name": "string-long-single-quote.turtle"
+    },
+    {
+      "match": "(\"(?:(?:[^\\x22\\x5C\\xA\\xD])|\\\\[tbnrf\"'\\\\])*\")(@[a-zA-Z-]+)?",
+      "captures": {
+        "3": {
+          "name": "support.type.turtle"
+        },
+        "1": {
+          "name": "string.quoted.double.turtle"
+        },
+        "2": {
+          "name": "keyword.operator.turtle"
+        }
+      },
+      "comment": "String literal",
+      "name": "string.turtle"
+    },
+    {
+      "match": "('(?:(?:[^'\\x5C\\xA\\xD])|\\\\[tbnrf\"'\\\\])*')(@[a-zA-Z-]+)?",
+      "captures": {
+        "3": {
+          "name": "support.type.turtle"
+        },
+        "1": {
+          "name": "string.quoted.double.turtle"
+        },
+        "2": {
+          "name": "keyword.operator.turtle"
+        }
+      },
+      "comment": "String literal single quote",
+      "name": "string-single-quote.turtle"
+    },
+    {
+      "match": "#.*$",
+      "comment": "Comments",
+      "name": "comment.line.number-sign.turtle"
+    },
+    {
+      "match": "\\b[+-]?(?:\\d+|[0-9]+\\.[0-9]*|\\.[0-9]+(?:[eE][+-]?\\d+)?)\\b",
+      "comment": "Numeric literal",
+      "name": "constant.numeric.turtle"
+    },
+    {
+      "match": "\\b(?:true|false)\\b",
+      "comment": "Boolean",
+      "name": "constant.language.turtle"
+    }
+  ],
+  "name": "Turtle",
+  "scopeName": "source.turtle"
+}
