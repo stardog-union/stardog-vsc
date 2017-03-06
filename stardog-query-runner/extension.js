@@ -132,30 +132,44 @@ const sendQuery = (win, conn, database, provider) => {
   });
 };
 
-// this method is called when your extension is activated
-const activate = (context) => {
-  log('stardog-query-runner is active!');
+const init = (context, resultProvider) => {
   const config = workspace.getConfiguration(CONFIG_SECTION);
   const errors = exports.validateSettings(config);
 
-  const resultProvider = new exports.ResultProvider();
-  const registration = workspace.registerTextDocumentContentProvider('stardog-results', resultProvider);
-
   if (errors) {
-    window.showErrorMessage(`Missing required setting${errors.length > 1 ? '(s)' : ''}: [${errors.join(', ')}]`, 'Open "settings.json"').then(() => {
-    // TODO: Do something here to show the settings panel so the user can change
-      console.log('callback');
+    window.showErrorMessage(`Missing required setting${errors.length > 1 ? '(s)' : ''}: [${errors.join(', ')}]`, 'Open "settings.json"').then((item) => {
+      const listener = workspace.onDidChangeConfiguration(() => {
+        // Kill the listener
+        listener.dispose();
+        // Kill the command so we can re-register it
+        onSendQuery.dispose();
+        exports.init(context, resultProvider);
+      });
+      if (item) {
+        commands.executeCommand('workbench.action.openGlobalSettings');
+      }
     });
 
     // If the settings aren't valid, still create the command, but make it a no-op
     // This is to prevent errors from happening on menu items and pallet commands
+    // We'll wait for valid settings before trying again.
     onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => {});
   } else {
     onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () =>
       exports.sendQuery(window, exports.buildConnection(config), config.database, resultProvider));
   }
 
-  context.subscriptions.push(onSendQuery, registration);
+  context.subscriptions.push(onSendQuery);
+};
+
+// this method is called when your extension is activated
+const activate = (context) => {
+  log('stardog-query-runner is active!');
+  const resultProvider = new exports.ResultProvider();
+  const registration = workspace.registerTextDocumentContentProvider('stardog-results', resultProvider);
+
+  context.subscriptions.push(registration);
+  exports.init(context, resultProvider);
 };
 
 // this method is called when your extension is deactivated
@@ -168,3 +182,4 @@ exports.deactivate = deactivate;
 exports.sendQuery = sendQuery;
 exports.validateSettings = validateSettings;
 exports.ResultProvider = ResultProvider;
+exports.init = init;
