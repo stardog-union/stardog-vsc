@@ -248,18 +248,18 @@ describe('stardog-query-runner extension', () => {
       });
     });
 
-    it('creates the command even if there is an error', () => {
+    it('registers commands even if there is an error', () => {
       const context = pluginContext();
       simple.mock(commands, 'registerCommand').returnWith(null);
       simple.mock(workspace, 'getConfiguration').returnWith(undefined);
       simple.mock(window, 'showErrorMessage').resolveWith(null);
       extension.init(context, new ResultProvider());
-      expect(commands.registerCommand.lastCall.args[0]).to.eql('stardog-query-runner.sendQuery');
-      expect(context.subscriptions.push.called).to.be.true();
+      expect(context.subscriptions.push.lastCall.args).to.have.length(2);
     });
 
     it('shows a pick list of databases', (done) => {
       const context = pluginContext();
+      const pickItem = (label) => ({ label, description: '$(database)' });
       simple.mock(commands, 'registerCommand').returnWith({ dispose: () => { } });
       simple.mock(workspace, 'getConfiguration').returnWith({
         password: 'password',
@@ -275,7 +275,7 @@ describe('stardog-query-runner extension', () => {
 
       setImmediate(() => {
         expect(window.showQuickPick.lastCall.args).to.eql([
-          ['1', '2', '3'], {
+          [pickItem('1'), pickItem('2'), pickItem('3')], {
             placeHolder: 'Select a target database',
             ignoreFocusOut: true,
           },
@@ -307,14 +307,52 @@ describe('stardog-query-runner extension', () => {
       setImmediate(() => {
         expect(disposeable.dispose.called).to.be.true();
         // Once for the stub, and again for the real command after the promise resolves.
-        expect(commands.registerCommand.callCount).to.be(2);
+        // times 2 for the two different commands exposed
+        expect(commands.registerCommand.callCount).to.be(4);
         const [
           name,
           handler,
-        ] = commands.registerCommand.lastCall.args;
+        ] = commands.registerCommand.calls[2].args;
         handler();
         expect(name).to.be('stardog-query-runner.sendQuery');
         expect(extension.sendQuery.called).to.be.true();
+        done();
+      });
+    });
+
+    it('registers the command that will init the plugin', (done) => {
+      const context = pluginContext();
+      const disposeable = {
+        dispose: simple.stub(),
+      };
+
+      simple.mock(commands, 'registerCommand').returnWith(disposeable);
+      simple.mock(workspace, 'getConfiguration').returnWith({
+        password: 'password',
+        endpoint: 'endpoint',
+        username: 'username',
+        database: 'database',
+      });
+      simple.mock(Connection.prototype, 'listDBs').callbackWith({
+        databases: ['1', '2', '3'],
+      });
+      simple.mock(window, 'showQuickPick').resolveWith('myDB');
+      simple.mock(extension, 'sendQuery').returnWith(null);
+      simple.mock(extension, 'init');
+      extension.init(context, new ResultProvider());
+
+      setImmediate(() => {
+        expect(disposeable.dispose.called).to.be.true();
+        // Once for the stub, and again for the real command after the promise resolves.
+        // times 2 for the two different commands exposed
+        expect(commands.registerCommand.callCount).to.be(4);
+        const [
+          name,
+          handler,
+        ] = commands.registerCommand.calls[3].args;
+        handler();
+        expect(name).to.be('stardog-query-runner.pickDatabase');
+        expect(extension.init.callCount).to.be(2);
         done();
       });
     });

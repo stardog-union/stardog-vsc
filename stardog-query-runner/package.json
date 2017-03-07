@@ -18,11 +18,15 @@
     "commands": [
       {
         "command": "stardog-query-runner.sendQuery",
-        "title": "Execute query",
+        "title": "Stardog: Execute query",
         "icon": {
           "dark": "./static/white.svg",
           "light": "./static.black.svg"
         }
+      },
+      {
+        "command": "stardog-query-runner.pickDatabase",
+        "title": "Stardog: Pick database"
       }
     ],
     "configuration": {
