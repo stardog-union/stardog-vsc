@@ -8,14 +8,8 @@ const { Connection } = require('stardog');
 const extension = require('../extension');
 const simple = require('simple-mock');
 
-const {
-  validateSettings,
-  buildConnection,
-  ResultProvider,
-  activate,
-  sendQuery,
-  init,
-} = extension;
+const { ResultProvider } = extension;
+
 
 describe('stardog-query-runner extension', () => {
   const pluginContext = () => ({
@@ -23,27 +17,30 @@ describe('stardog-query-runner extension', () => {
       push: simple.mock(),
     },
   });
+  beforeEach(() => {
+    simple.mock(commands, 'executeCommand').resolveWith(null);
+  });
   afterEach(() => simple.restore());
   describe('validateSettings()', () => {
     it('returns a list of errors if there are no settings', () => {
-      const errors = validateSettings();
+      const errors = extension.validateSettings();
       expect(errors).to.have.length(4);
     });
 
     it('returns specific errors', () => {
-      const errors = validateSettings({
+      const errors = extension.validateSettings({
         password: '',
         endpoint: null,
         username: 'username',
         database: 'database',
       });
       expect(errors).to.have.length(2);
-      expect(errors[0]).to.equal('endpoint');
-      expect(errors[1]).to.equal('password');
+      expect(errors[0]).to.be('endpoint');
+      expect(errors[1]).to.be('password');
     });
 
     it('returns null if there are no errors with the settings', () => {
-      const errors = validateSettings({
+      const errors = extension.validateSettings({
         password: 'password',
         endpoint: 'endpoint',
         username: 'username',
@@ -52,9 +49,9 @@ describe('stardog-query-runner extension', () => {
       expect(errors).to.be.null();
     });
   });
-  describe('buildConnection', () => {
+  describe('buildConnection()', () => {
     it('builds a Stardog connection based on the supplied settings', () => {
-      const result = buildConnection({
+      const result = extension.buildConnection({
         username: 'username',
         password: 'password',
         endpoint: 'endpoint',
@@ -64,7 +61,7 @@ describe('stardog-query-runner extension', () => {
     });
 
     it('gracefully handles empty config', () => {
-      const result = buildConnection();
+      const result = extension.buildConnection();
       expect(result).to.be.null();
     });
   });
@@ -75,7 +72,7 @@ describe('stardog-query-runner extension', () => {
       const conn = { query };
       const win = { activeTextEditor: null };
 
-      sendQuery(win, conn);
+      extension.sendQuery(win, conn);
       expect(query.called).to.be.false();
     });
 
@@ -88,7 +85,7 @@ describe('stardog-query-runner extension', () => {
         },
       };
 
-      expect(() => { sendQuery(win, null); }).to.not.throw();
+      expect(() => { extension.sendQuery(win, null); }).to.not.throw();
       expect(win.activeTextEditor.document.getText.called).to.be.false();
     });
 
@@ -106,7 +103,7 @@ describe('stardog-query-runner extension', () => {
         },
       };
 
-      sendQuery(win, conn, 'myDB', {});
+      extension.sendQuery(win, conn, 'myDB', {});
       expect(query.called).to.be.true();
       expect(win.activeTextEditor.document.getText.lastCall.args).to.eql([undefined]);
       expect(query.lastCall.args[0]).to.eql({
@@ -132,7 +129,7 @@ describe('stardog-query-runner extension', () => {
         },
       };
 
-      sendQuery(win, conn, 'myDB', {});
+      extension.sendQuery(win, conn, 'myDB', {});
       expect(query.called).to.be.true();
       expect(win.activeTextEditor.document.getText.lastCall.args).to.eql([selection]);
       expect(query.lastCall.args[0]).to.eql({
@@ -154,7 +151,7 @@ describe('stardog-query-runner extension', () => {
         showErrorMessage: simple.mock(),
       };
 
-      sendQuery(win, conn, 'myDB', {});
+      extension.sendQuery(win, conn, 'myDB', {});
       expect(win.showErrorMessage.called).to.be.true();
     });
   });
@@ -182,11 +179,7 @@ describe('stardog-query-runner extension', () => {
     const provider = new ResultProvider();
     simple.mock(provider, 'setData');
 
-
-    // Do this to prevent errors during this test
-    simple.mock(commands, 'executeCommand').resolveWith(null);
-
-    sendQuery(win, conn, 'myDB', provider);
+    extension.sendQuery(win, conn, 'myDB', provider);
     expect(provider.setData.called).to.be.true();
     expect(provider.columns).to.eql(['s', 'o', 'p']);
     expect(provider.values).to.eql([1, 2, 3]);
@@ -213,20 +206,19 @@ describe('stardog-query-runner extension', () => {
     };
     const provider = new ResultProvider();
 
-    simple.mock(commands, 'executeCommand').resolveWith(null);
-    sendQuery(win, conn, 'myDB', provider);
+    extension.sendQuery(win, conn, 'myDB', provider);
     const args = commands.executeCommand.lastCall.args;
-    expect(args[0]).to.equal('vscode.previewHtml');
-    expect(args[1].toString()).to.equal('stardog-results://mydb/results');
+    expect(args[0]).to.be('vscode.previewHtml');
+    expect(args[1].toString()).to.be('stardog-results://mydb/results');
   });
 
   describe('init()', () => {
     it('shows an error message if there are issues with the settings', () => {
       const context = pluginContext();
-      simple.mock(commands, 'registerCommand').returnWith(undefined);
+      simple.mock(commands, 'registerCommand').returnWith(null);
       simple.mock(workspace, 'getConfiguration').returnWith(undefined);
       simple.mock(window, 'showErrorMessage').resolveWith(null);
-      init(context, new ResultProvider());
+      extension.init(context, new ResultProvider());
       expect(window.showErrorMessage.called).to.be.true();
     });
 
@@ -235,8 +227,8 @@ describe('stardog-query-runner extension', () => {
       simple.mock(workspace, 'getConfiguration').returnWith(undefined);
       simple.mock(window, 'showErrorMessage').resolveWith(null);
       simple.mock(workspace, 'onDidChangeConfiguration').resolveWith(null);
-      simple.mock(commands, 'registerCommand').returnWith(undefined);
-      init(context, new ResultProvider());
+      simple.mock(commands, 'registerCommand').returnWith(null);
+      extension.init(context, new ResultProvider());
       setImmediate(() => {
         expect(workspace.onDidChangeConfiguration.called).to.be.true();
         done();
@@ -245,12 +237,11 @@ describe('stardog-query-runner extension', () => {
 
     it('shows the user settings if the user clicks the displayed button', (done) => {
       const context = pluginContext();
-      simple.mock(commands, 'registerCommand').returnWith(undefined);
+      simple.mock(commands, 'registerCommand').returnWith(null);
       simple.mock(workspace, 'getConfiguration').returnWith(undefined);
       simple.mock(window, 'showErrorMessage').resolveWith(true); // Simulate clicking one of the buttons
       simple.mock(workspace, 'onDidChangeConfiguration').returnWith(null);
-      simple.mock(commands, 'executeCommand').returnWith(undefined);
-      init(context, new ResultProvider());
+      extension.init(context, new ResultProvider());
       setImmediate(() => {
         expect(commands.executeCommand.lastCall.args).to.eql(['workbench.action.openGlobalSettings']);
         done();
@@ -259,10 +250,10 @@ describe('stardog-query-runner extension', () => {
 
     it('creates the command even if there is an error', () => {
       const context = pluginContext();
-      simple.mock(commands, 'registerCommand').returnWith(undefined);
+      simple.mock(commands, 'registerCommand').returnWith(null);
       simple.mock(workspace, 'getConfiguration').returnWith(undefined);
       simple.mock(window, 'showErrorMessage').resolveWith(null);
-      init(context, new ResultProvider());
+      extension.init(context, new ResultProvider());
       expect(commands.registerCommand.lastCall.args[0]).to.eql('stardog-query-runner.sendQuery');
       expect(context.subscriptions.push.called).to.be.true();
     });
@@ -280,7 +271,7 @@ describe('stardog-query-runner extension', () => {
         databases: ['1', '2', '3'],
       });
       simple.mock(window, 'showQuickPick').resolveWith('myDB');
-      init(context, new ResultProvider());
+      extension.init(context, new ResultProvider());
 
       setImmediate(() => {
         expect(window.showQuickPick.lastCall.args).to.eql([
@@ -310,19 +301,19 @@ describe('stardog-query-runner extension', () => {
         databases: ['1', '2', '3'],
       });
       simple.mock(window, 'showQuickPick').resolveWith('myDB');
-      simple.mock(extension, 'sendQuery').returnWith(undefined);
-      init(context, new ResultProvider());
+      simple.mock(extension, 'sendQuery').returnWith(null);
+      extension.init(context, new ResultProvider());
 
       setImmediate(() => {
         expect(disposeable.dispose.called).to.be.true();
         // Once for the stub, and again for the real command after the promise resolves.
-        expect(commands.registerCommand.callCount).to.equal(2);
+        expect(commands.registerCommand.callCount).to.be(2);
         const [
           name,
           handler,
         ] = commands.registerCommand.lastCall.args;
         handler();
-        expect(name).to.equal('stardog-query-runner.sendQuery');
+        expect(name).to.be('stardog-query-runner.sendQuery');
         expect(extension.sendQuery.called).to.be.true();
         done();
       });
@@ -333,14 +324,14 @@ describe('stardog-query-runner extension', () => {
     it('registers the result schema', () => {
       const context = pluginContext();
       simple.mock(workspace, 'registerTextDocumentContentProvider').returnWith(-1);
-      simple.mock(extension, 'init').returnWith(undefined);
+      simple.mock(extension, 'init').returnWith(null);
 
-      activate(context);
+      extension.activate(context);
       const [
         schema,
         value,
       ] = workspace.registerTextDocumentContentProvider.lastCall.args;
-      expect(schema).to.equal('stardog-results');
+      expect(schema).to.be('stardog-results');
       expect(value).to.be.a(ResultProvider);
       expect(extension.init.called).to.be.true();
     });
