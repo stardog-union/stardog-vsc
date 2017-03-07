@@ -77,6 +77,7 @@ class ResultProvider {
 // We want to keep a handle to this in case we ever need to
 // dispose of the old one, and add a new one in it's place
 let onSendQuery = null;
+let onPickDatabase = null;
 
 const validateSettings = (config = {}) => {
   const settings = ['endpoint', 'username', 'password', 'database'];
@@ -139,36 +140,40 @@ const getDBList = (win, conn) => new Promise((resolve, reject) => {
   });
 });
 
+const disposeAll = (...disposables) => disposables.forEach(d => d.dispose());
+
 const init = (context, resultProvider) => {
   const config = workspace.getConfiguration(CONFIG_SECTION);
   const errors = exports.validateSettings(config);
 
+  // Make these no-ops by default. Wait for good settings before making them do anything.
+  // This is to prevent race conditions where the user tries to use one before everything
+  // is really ready to go.
+  onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => { });
+  onPickDatabase = commands.registerCommand('stardog-query-runner.pickDatabase', () => { });
+  commands.executeCommand('setContext', 'query-ready', false);
+
   if (errors) {
     window.showErrorMessage(`Missing required setting${errors.length > 1 ? '(s)' : ''}: [${errors.join(', ')}]`, 'Open "settings.json"').then((item) => {
       const listener = workspace.onDidChangeConfiguration(() => {
-        // Kill the listener
-        listener.dispose();
-        // Kill the command so we can re-register it
-        onSendQuery.dispose();
+        disposeAll(onSendQuery, onPickDatabase, listener);
         exports.init(context, resultProvider);
       });
       if (item) {
         commands.executeCommand('workbench.action.openGlobalSettings');
       }
     });
-
-    // If the settings aren't valid, still create the command, but make it a no-op
-    // This is to prevent errors from happening on menu items and pallet commands
-    // We'll wait for valid settings before trying again.
-    onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => { });
   } else {
     // Because we don't have a DB name yet, make this a no-op in case the user
     // runs from the command pallet
-    onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => { });
     const conn = exports.buildConnection(config);
 
     getDBList(window, conn)
-      .then(dbList => window.showQuickPick(dbList || [], {
+      .then(dbList => (dbList || []).map(item => ({
+        label: `${item}`,
+        description: '$(database)',
+      })))
+      .then(dbList => window.showQuickPick(dbList, {
         placeHolder: 'Select a target database',
         ignoreFocusOut: true,
       }))
@@ -177,19 +182,24 @@ const init = (context, resultProvider) => {
         // Make the menu item visible.
         commands.executeCommand('setContext', 'query-ready', true);
         const status = window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-        status.text = `Now querying ${db}.`;
+        status.text = `${db.label} $(database)`;
+        status.command = 'stardog-query-runner.pickDatabase';
         status.show();
-        // Replace old onSendQuery with complete one
-        onSendQuery.dispose();
+        // Replace old commands with complete ones
+        disposeAll(onSendQuery, onPickDatabase);
         onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () =>
-          exports.sendQuery(window, conn, db, resultProvider));
+          exports.sendQuery(window, conn, db.label, resultProvider));
+        onPickDatabase = commands.registerCommand('stardog-query-runner.pickDatabase', () => {
+          disposeAll(onSendQuery, onPickDatabase, status);
+          exports.init(context, resultProvider);
+        });
       })
       .catch((err) => {
         window.showErrorMessage(`Unrecoverable error detected.${err}`);
       });
   }
 
-  context.subscriptions.push(onSendQuery);
+  context.subscriptions.push(onSendQuery, onPickDatabase);
 };
 
 // this method is called when your extension is activated
@@ -197,14 +207,12 @@ const activate = (context) => {
   log('stardog-query-runner is active!');
   const resultProvider = new exports.ResultProvider();
   const registration = workspace.registerTextDocumentContentProvider('stardog-results', resultProvider);
-  commands.executeCommand('setContext', 'query-ready', false);
   context.subscriptions.push(registration);
   exports.init(context, resultProvider);
 };
 
 // this method is called when your extension is deactivated
-const deactivate = () => {
-};
+const deactivate = () => {};
 
 exports.activate = activate;
 exports.buildConnection = buildConnection;
