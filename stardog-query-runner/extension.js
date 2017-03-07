@@ -173,9 +173,9 @@ const init = (context, resultProvider) => {
         ignoreFocusOut: true,
       }))
       .then((db) => {
+        if (!db) { throw Error('You must select a database for this plugin to function.'); }
         // Make the menu item visible.
         commands.executeCommand('setContext', 'query-ready', true);
-        // Provide some status about the DB you are hitting
         const status = window.createStatusBarItem(vscode.StatusBarAlignment.Right);
         status.text = `Now querying ${db}.`;
         status.show();
