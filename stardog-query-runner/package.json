@@ -54,7 +54,8 @@
       "editor/title": [
         {
           "command": "stardog-query-runner.sendQuery",
-          "group": "navigation"
+          "group": "navigation",
+          "when": "query-ready"
         }
       ]
     }
