@@ -61,7 +61,7 @@ class ResultProvider {
           </thead>
           <tbody>
             ${this.values.map(v =>
-              `<tr>
+        `<tr>
                 ${this.columns.map(c => `<td>${v[c].value}</td>`).join('')}
               </tr>`).join('')}
           </tbody>
@@ -123,14 +123,21 @@ const sendQuery = (win, conn, database, provider) => {
       provider.setData(body.head.vars, body.results.bindings);
       const uri = Uri.parse(`stardog-results://${database}/results`);
       commands.executeCommand('vscode.previewHtml', uri, vscode.ViewColumn.One, 'Query Results')
-      .then(() => {}, (reason) => {
-        window.showErrorMessage(reason);
-      });
+        .then(() => { }, (reason) => {
+          window.showErrorMessage(reason);
+        });
     } else {
       win.showErrorMessage(body);
     }
   });
 };
+
+const getDBList = (win, conn) => new Promise((resolve, reject) => {
+  conn.listDBs((body) => {
+    if (body && body.databases) { return resolve(body.databases); }
+    return reject(body);
+  });
+});
 
 const init = (context, resultProvider) => {
   const config = workspace.getConfiguration(CONFIG_SECTION);
@@ -153,10 +160,33 @@ const init = (context, resultProvider) => {
     // If the settings aren't valid, still create the command, but make it a no-op
     // This is to prevent errors from happening on menu items and pallet commands
     // We'll wait for valid settings before trying again.
-    onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => {});
+    onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => { });
   } else {
-    onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () =>
-      exports.sendQuery(window, exports.buildConnection(config), config.database, resultProvider));
+    // Because we don't have a DB name yet, make this a no-op in case the user
+    // runs from the command pallet
+    onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => { });
+    const conn = exports.buildConnection(config);
+
+    getDBList(window, conn)
+      .then(dbList => window.showQuickPick(dbList || [], {
+        placeHolder: 'Select a target database',
+        ignoreFocusOut: true,
+      }))
+      .then((db) => {
+        // Make the menu item visible.
+        commands.executeCommand('setContext', 'query-ready', true);
+        // Provide some status about the DB you are hitting
+        const status = window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+        status.text = `Now querying ${db}.`;
+        status.show();
+        // Replace old onSendQuery with complete one
+        onSendQuery.dispose();
+        onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () =>
+          exports.sendQuery(window, conn, db, resultProvider));
+      })
+      .catch((err) => {
+        window.showErrorMessage(`Unrecoverable error detected.${err}`);
+      });
   }
 
   context.subscriptions.push(onSendQuery);
@@ -167,7 +197,7 @@ const activate = (context) => {
   log('stardog-query-runner is active!');
   const resultProvider = new exports.ResultProvider();
   const registration = workspace.registerTextDocumentContentProvider('stardog-results', resultProvider);
-
+  commands.executeCommand('setContext', 'query-ready', false);
   context.subscriptions.push(registration);
   exports.init(context, resultProvider);
 };

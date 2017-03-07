@@ -267,23 +267,65 @@ describe('stardog-query-runner extension', () => {
       expect(context.subscriptions.push.called).to.be.true();
     });
 
-    it('creates the command that will call sendQuery', () => {
+    it('shows a pick list of databases', (done) => {
       const context = pluginContext();
-      simple.mock(commands, 'registerCommand').returnWith(undefined);
+      simple.mock(commands, 'registerCommand').returnWith({ dispose: () => { } });
       simple.mock(workspace, 'getConfiguration').returnWith({
         password: 'password',
         endpoint: 'endpoint',
         username: 'username',
         database: 'database',
       });
+      simple.mock(Connection.prototype, 'listDBs').callbackWith({
+        databases: ['1', '2', '3'],
+      });
+      simple.mock(window, 'showQuickPick').resolveWith('myDB');
+      init(context, new ResultProvider());
+
+      setImmediate(() => {
+        expect(window.showQuickPick.lastCall.args).to.eql([
+          ['1', '2', '3'], {
+            placeHolder: 'Select a target database',
+            ignoreFocusOut: true,
+          },
+        ]);
+        done();
+      });
+    });
+
+    it('registers the command that will run queries', (done) => {
+      const context = pluginContext();
+      const disposeable = {
+        dispose: simple.stub(),
+      };
+
+      simple.mock(commands, 'registerCommand').returnWith(disposeable);
+      simple.mock(workspace, 'getConfiguration').returnWith({
+        password: 'password',
+        endpoint: 'endpoint',
+        username: 'username',
+        database: 'database',
+      });
+      simple.mock(Connection.prototype, 'listDBs').callbackWith({
+        databases: ['1', '2', '3'],
+      });
+      simple.mock(window, 'showQuickPick').resolveWith('myDB');
       simple.mock(extension, 'sendQuery').returnWith(undefined);
       init(context, new ResultProvider());
-      expect(commands.registerCommand.lastCall.args[0]).to.eql('stardog-query-runner.sendQuery');
-      const onSendQuery = commands.registerCommand.lastCall.args[1];
-      onSendQuery();
-      expect(extension.sendQuery.called).to.be.true();
-      expect(extension.sendQuery.lastCall.args).to.have.length(4);
-      expect(context.subscriptions.push.called).to.be.true();
+
+      setImmediate(() => {
+        expect(disposeable.dispose.called).to.be.true();
+        // Once for the stub, and again for the real command after the promise resolves.
+        expect(commands.registerCommand.callCount).to.equal(2);
+        const [
+          name,
+          handler,
+        ] = commands.registerCommand.lastCall.args;
+        handler();
+        expect(name).to.equal('stardog-query-runner.sendQuery');
+        expect(extension.sendQuery.called).to.be.true();
+        done();
+      });
     });
   });
 
