@@ -1,11 +1,11 @@
 // eslint-disable-next-line import/no-extraneous-dependencies, import/no-unresolved
 const vscode = require('vscode');
 
-const { log } = require('./lib/log');
-
-const { window, workspace, commands, Uri } = vscode;
+const { window, workspace, commands, Uri, languages } = vscode;
 
 const { Connection } = require('stardog');
+
+const CompletionProvider = require('./completion');
 
 const CONFIG_SECTION = 'stardog';
 const CSS = `
@@ -74,10 +74,11 @@ class ResultProvider {
 }
 
 
-// We want to keep a handle to this in case we ever need to
+// We want to keep a handle to these in case we ever need to
 // dispose of the old one, and add a new one in it's place
 let onSendQuery = null;
 let onPickDatabase = null;
+let completionProvider = null;
 
 const validateSettings = (config = {}) => {
   const settings = ['endpoint', 'username', 'password', 'database'];
@@ -140,7 +141,7 @@ const getDBList = (win, conn) => new Promise((resolve, reject) => {
   });
 });
 
-const disposeAll = (...disposables) => disposables.forEach(d => d.dispose());
+const disposeAll = (...disposables) => disposables.forEach(d => d && d.dispose());
 
 const init = (context, resultProvider) => {
   const config = workspace.getConfiguration(CONFIG_SECTION);
@@ -154,7 +155,7 @@ const init = (context, resultProvider) => {
   commands.executeCommand('setContext', 'query-ready', false);
 
   if (errors) {
-    window.showErrorMessage(`Missing required setting${errors.length > 1 ? '(s)' : ''}: [${errors.join(', ')}]`, 'Open "settings.json"').then((item) => {
+    return window.showErrorMessage(`Missing required setting${errors.length > 1 ? '(s)' : ''}: [${errors.join(', ')}]`, 'Open "settings.json"').then((item) => {
       const listener = workspace.onDidChangeConfiguration(() => {
         disposeAll(onSendQuery, onPickDatabase, listener);
         exports.init(context, resultProvider);
@@ -163,48 +164,48 @@ const init = (context, resultProvider) => {
         commands.executeCommand('workbench.action.openGlobalSettings');
       }
     });
-  } else {
-    // Because we don't have a DB name yet, make this a no-op in case the user
-    // runs from the command pallet
-    const conn = exports.buildConnection(config);
-
-    getDBList(window, conn)
-      .then(dbList => (dbList || []).map(item => ({
-        label: `${item}`,
-        description: '$(database)',
-      })))
-      .then(dbList => window.showQuickPick(dbList, {
-        placeHolder: 'Select a target database',
-        ignoreFocusOut: true,
-      }))
-      .then((db) => {
-        if (!db) { throw Error('You must select a database for this plugin to function.'); }
-        // Make the menu item visible.
-        commands.executeCommand('setContext', 'query-ready', true);
-        const status = window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-        status.text = `${db.label} $(database)`;
-        status.command = 'stardog-query-runner.pickDatabase';
-        status.show();
-        // Replace old commands with complete ones
-        disposeAll(onSendQuery, onPickDatabase);
-        onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () =>
-          exports.sendQuery(window, conn, db.label, resultProvider));
-        onPickDatabase = commands.registerCommand('stardog-query-runner.pickDatabase', () => {
-          disposeAll(onSendQuery, onPickDatabase, status);
-          exports.init(context, resultProvider);
-        });
-      })
-      .catch((err) => {
-        window.showErrorMessage(`Unrecoverable error detected.${err}`);
-      });
   }
 
-  context.subscriptions.push(onSendQuery, onPickDatabase);
+  const conn = exports.buildConnection(config);
+
+  getDBList(window, conn)
+    .then(dbList => (dbList || []).map(item => ({
+      label: `${item}`,
+      description: '$(database)',
+    })))
+    .then(dbList => window.showQuickPick(dbList, {
+      placeHolder: 'Select a target database',
+      ignoreFocusOut: true,
+    }))
+    .then((db) => {
+      if (!db) { throw Error('You must select a database for this plugin to function.'); }
+      // Make the menu item visible.
+      commands.executeCommand('setContext', 'query-ready', true);
+
+      const status = window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+      status.text = `${db.label} $(database)`;
+      status.command = 'stardog-query-runner.pickDatabase';
+      status.show();
+
+      // Replace old commands with complete ones
+      disposeAll(onSendQuery, onPickDatabase, completionProvider);
+      onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () =>
+        exports.sendQuery(window, conn, db.label, resultProvider));
+      onPickDatabase = commands.registerCommand('stardog-query-runner.pickDatabase', () => {
+        disposeAll(onSendQuery, onPickDatabase, status, completionProvider);
+        exports.init(context, resultProvider);
+      });
+      completionProvider = languages.registerCompletionItemProvider('*', new CompletionProvider(conn, db.label), [':']);
+    })
+    .catch((err) => {
+      window.showErrorMessage(`Unrecoverable error detected.${err}`);
+    });
+  return undefined;
 };
 
 // this method is called when your extension is activated
 const activate = (context) => {
-  log('stardog-query-runner is active!');
+  console.log('stardog-query-runner is active!');
   const resultProvider = new exports.ResultProvider();
   const registration = workspace.registerTextDocumentContentProvider('stardog-results', resultProvider);
   context.subscriptions.push(registration);
@@ -212,7 +213,9 @@ const activate = (context) => {
 };
 
 // this method is called when your extension is deactivated
-const deactivate = () => {};
+const deactivate = () => {
+  disposeAll(onSendQuery, onPickDatabase, completionProvider);
+};
 
 exports.activate = activate;
 exports.buildConnection = buildConnection;
