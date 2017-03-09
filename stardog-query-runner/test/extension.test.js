@@ -3,7 +3,7 @@
 const expect = require('must');
 
 // eslint-disable-next-line import/no-extraneous-dependencies, import/no-unresolved
-const { workspace, window, commands } = require('vscode');
+const { workspace, window, commands, languages } = require('vscode');
 const { Connection } = require('stardog');
 const extension = require('../extension');
 const simple = require('simple-mock');
@@ -49,6 +49,7 @@ describe('stardog-query-runner extension', () => {
       expect(errors).to.be.null();
     });
   });
+
   describe('buildConnection()', () => {
     it('builds a Stardog connection based on the supplied settings', () => {
       const result = extension.buildConnection({
@@ -65,6 +66,7 @@ describe('stardog-query-runner extension', () => {
       expect(result).to.be.null();
     });
   });
+
   describe('sendQuery()', () => {
     const dbQuery = 'SELECT DISTINCT ?s WHERE { ?s ?p ?o } LIMIT 10';
     it('does nothing if there is not an active textEditor', () => {
@@ -156,62 +158,6 @@ describe('stardog-query-runner extension', () => {
     });
   });
 
-  it('sets provider values on success', () => {
-    const query = simple.mock().callbackWith({
-      head: {
-        vars: ['s', 'o', 'p'],
-      },
-      results: {
-        bindings: [1, 2, 3],
-      },
-    });
-    const conn = { query };
-    const win = {
-      activeTextEditor: {
-        document: {
-          getText: simple.mock(),
-        },
-        selection: {},
-      },
-      showErrorMessage: simple.mock(),
-    };
-
-    const provider = new ResultProvider();
-    simple.mock(provider, 'setData');
-
-    extension.sendQuery(win, conn, 'myDB', provider);
-    expect(provider.setData.called).to.be.true();
-    expect(provider.columns).to.eql(['s', 'o', 'p']);
-    expect(provider.values).to.eql([1, 2, 3]);
-  });
-
-  it('calls the previewHtml command', () => {
-    const query = simple.mock().callbackWith({
-      head: {
-        vars: ['s', 'o', 'p'],
-      },
-      results: {
-        bindings: [1, 2, 3],
-      },
-    });
-    const conn = { query };
-    const win = {
-      activeTextEditor: {
-        document: {
-          getText: simple.mock(),
-        },
-        selection: {},
-      },
-      showErrorMessage: simple.mock(),
-    };
-    const provider = new ResultProvider();
-
-    extension.sendQuery(win, conn, 'myDB', provider);
-    const args = commands.executeCommand.lastCall.args;
-    expect(args[0]).to.be('vscode.previewHtml');
-    expect(args[1].toString()).to.be('stardog-results://mydb/results');
-  });
-
   describe('init()', () => {
     it('shows an error message if there are issues with the settings', () => {
       const context = pluginContext();
@@ -254,7 +200,7 @@ describe('stardog-query-runner extension', () => {
       simple.mock(workspace, 'getConfiguration').returnWith(undefined);
       simple.mock(window, 'showErrorMessage').resolveWith(null);
       extension.init(context, new ResultProvider());
-      expect(context.subscriptions.push.lastCall.args).to.have.length(2);
+      expect(commands.registerCommand.callCount).to.be(2);
     });
 
     it('shows a pick list of databases', (done) => {
@@ -356,6 +302,33 @@ describe('stardog-query-runner extension', () => {
         done();
       });
     });
+
+    it('registers a CompletionItemProvider', (done) => {
+      const context = pluginContext();
+      const disposeable = {
+        dispose: simple.stub(),
+      };
+
+      simple.mock(commands, 'registerCommand').returnWith(disposeable);
+      simple.mock(workspace, 'getConfiguration').returnWith({
+        password: 'password',
+        endpoint: 'endpoint',
+        username: 'username',
+        database: 'database',
+      });
+      simple.mock(Connection.prototype, 'listDBs').callbackWith({
+        databases: ['1', '2', '3'],
+      });
+      simple.mock(window, 'showQuickPick').resolveWith('myDB');
+      simple.mock(extension, 'sendQuery').returnWith(null);
+      simple.mock(languages, 'registerCompletionItemProvider').returnWith(null);
+      extension.init(context, new ResultProvider());
+
+      setImmediate(() => {
+        expect(languages.registerCompletionItemProvider.called).to.be.true();
+        done();
+      });
+    });
   });
 
   describe('activate()', () => {
@@ -373,5 +346,61 @@ describe('stardog-query-runner extension', () => {
       expect(value).to.be.a(ResultProvider);
       expect(extension.init.called).to.be.true();
     });
+  });
+
+  it('sets provider values on success', () => {
+    const query = simple.mock().callbackWith({
+      head: {
+        vars: ['s', 'o', 'p'],
+      },
+      results: {
+        bindings: [1, 2, 3],
+      },
+    });
+    const conn = { query };
+    const win = {
+      activeTextEditor: {
+        document: {
+          getText: simple.mock(),
+        },
+        selection: {},
+      },
+      showErrorMessage: simple.mock(),
+    };
+
+    const provider = new ResultProvider();
+    simple.mock(provider, 'setData');
+
+    extension.sendQuery(win, conn, 'myDB', provider);
+    expect(provider.setData.called).to.be.true();
+    expect(provider.columns).to.eql(['s', 'o', 'p']);
+    expect(provider.values).to.eql([1, 2, 3]);
+  });
+
+  it('calls the previewHtml command', () => {
+    const query = simple.mock().callbackWith({
+      head: {
+        vars: ['s', 'o', 'p'],
+      },
+      results: {
+        bindings: [1, 2, 3],
+      },
+    });
+    const conn = { query };
+    const win = {
+      activeTextEditor: {
+        document: {
+          getText: simple.mock(),
+        },
+        selection: {},
+      },
+      showErrorMessage: simple.mock(),
+    };
+    const provider = new ResultProvider();
+
+    extension.sendQuery(win, conn, 'myDB', provider);
+    const args = commands.executeCommand.lastCall.args;
+    expect(args[0]).to.be('vscode.previewHtml');
+    expect(args[1].toString()).to.be('stardog-results://mydb/results');
   });
 });
