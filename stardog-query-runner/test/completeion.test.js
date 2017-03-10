@@ -22,8 +22,16 @@ describe('CompletionProvider', () => {
     };
 
     const c = new CompletionProvider(conn, 'myDb');
-    c.provideCompletionItems().then((result) => {
-      expect(result).to.eql([item('foo', 'http://www.example.com'), item('bar', 'http://www.wikipedia.com')]);
+    const items = [item('foo', 'http://www.example.com'), item('bar', 'http://www.wikipedia.com')];
+    Promise.all([
+      c.provideCompletionItems(),
+      c.provideCompletionItems(),
+      c.provideCompletionItems(),
+    ]).then((result) => {
+      // They're all the same
+      result.forEach((r) => { expect(r).to.eql(items); });
+      // Because we're debouncing the DB call, this will only be one
+      expect(conn.getNamespaces.callCount).to.be(1);
       done();
     });
   });
