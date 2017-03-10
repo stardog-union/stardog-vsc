@@ -1,0 +1,19 @@
+dept:location "{\"loc\"}" ;
+dept:deptno "{\"deptno\"}"^^xsd:integer ;
+sm:map [
+  sm:table "DEPT" ;
+] .
+
+emp:{"empno"} a emp:Employee ;
+emp:name "{\"ename\"}" ;
+emp:role emp:{ROLE} ;
+emp:department dept:{"deptno"} ;
+sm:map [
+  sm:query """
+    SELECT \"empno\", \"ename\", \"deptno\", (CASE \"job\"
+        WHEN 'CLERK' THEN 'general-office'
+        WHEN 'NIGHTGUARD' THEN 'security'
+        WHEN 'ENGINEER' THEN 'engineering'
+    END) AS ROLE FROM \"EMP\"
+    """ ;
+] .

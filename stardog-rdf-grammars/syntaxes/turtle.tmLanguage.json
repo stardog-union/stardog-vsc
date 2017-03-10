@@ -1,158 +1,188 @@
 {
+  "name": "Turtle",
+  "scopeName": "source.turtle",
   "fileTypes": [
+    "turtle",
     "ttl"
   ],
   "patterns": [
-    {
-      "match": "(?:^|\\s+)(?:@base|BASE|@prefix|PREFIX)\\b",
-      "comment": "Keywords",
-      "name": "storage.modifier.turtle"
+    { "include": "#iriref" },
+    { "include": "#prefix" },
+    { "include": "#prefixed-name" },
+    { "include": "#comment" },
+    { "include": "#special-predicate" },
+    { "include": "#literals" },
+    { "include": "#language-tag" }
+  ], 
+  "uuid": "230498230498sdfkj8909-34df-23dfs",
+  "repository": {
+    "prefix": {
+      "name": "keyword.turtle",
+      "match": "(?i:@?base|@?prefix)\\s"
     },
-    {
-      "match": "<[^<>\"{}|^`\\]\\\\]*>",
-      "comment": "URI",
-      "name": "string.uri.turtle"
+    "iriref": {
+      "name": "string.iri.turtle",
+      "match": "<[^\\x20-\\x20<>\"{}|^`\\\\]*>"
     },
-    {
-      "match": "((?:\\w(?:(?:\\w|-|[\\xB7\\x{0300}-\\x{036F}\\x{203F}-\\x{2040}]|\\.)*(?:\\w|-|[\\xB7\\x{0300}-\\x{036F}\\x{203F}-\\x{2040}]))?)?:)([^\\s|\/^*?+{}()]*)",
+    "prefixed-name": {
+      "name": "constant.complex.turtle",
+      "match": "(\\w*:)(\\w*)",
       "captures": {
         "1": {
-          "name": "entity.name.class.namespace.turtle"
+          "name": "constant.other.turtle"
         },
         "2": {
-          "name": "entity.name.tag.prefixed-uri.turtle"
+          "name": "entity.name.class.turtle"
         }
-      },
-      "comment": "Prefix \/ prefixed URI",
-      "name": "storage.type.turtle"
+      }
     },
-    {
-      "match": "\\sa\\s",
-      "comment": "The special triple predicate a",
-      "name": "variable.language.turtle"
+    "comment": {
+      "name": "comment.line.number-sign.turtle",
+      "match": "#.*$"
     },
-    {
-      "match": "(\"[^\"]*\")(\\^\\^)(<[^<>\"{}|^`\\]\\\\]*>|\\w*:[^\\s)]+)",
+    "special-predicate": {
+      "name": "meta.specialPredicate.turtle",
+      "match": "\\s(a)\\s",
       "captures": {
-        "3": {
-          "name": "support.type.turtle"
-        },
-        "1": {
-          "name": "string.turtle"
-        },
-        "2": {
-          "name": "keyword.operator.turtle"
+        "1":{
+          "name": "keyword.control.turtle" 
         }
-      },
-      "comment": "Typed literal",
-      "name": "literal.turtle"
+      }
     },
-    {
-      "end": "(\"{3})(@[a-zA-Z-]+)?",
-      "begin": "(\"{3})",
-      "beginCaptures": {
-        "1": {
-          "name": "string.quoted.triple.turtle"
-        }
-      },
+    "literals": {
       "patterns": [
-        {
-          "match": "((?:(?:\"{1,2})?(?:[^\"\\x5C]|\\\\[tbnrf\"'\\\\]))*)",
-          "captures": {
-            "1": {
-              "name": "string.quoted.triple.turtle"
-            }
-          }
-        }
-      ],
-      "comment": "String literal long quote",
-      "endCaptures": {
-        "1": {
-          "name": "string.quoted.triple.turtle"
-        },
-        "2": {
-          "name": "keyword.operator.turtle"
-        }
-      },
-      "name": "string-long-quote.turtle"
+        { "include": "#string"},
+        { "include": "#numeric" },
+        { "include": "#boolean" }
+      ]
     },
-    {
-      "end": "('{3})(@[a-zA-Z-]+)?",
-      "begin": "('{3})",
-      "beginCaptures": {
-        "1": {
-          "name": "string.quoted.triple.turtle"
-        }
-      },
+    "string": {
       "patterns": [
-        {
-          "match": "((?:(?:'{1,2})?(?:[^'\\x5C]|\\\\[tbnrf\"'\\\\]))*)",
-          "captures": {
-            "1": {
-              "name": "string.quoted.triple.turtle"
-            }
-          }
-        }
-      ],
-      "comment": "String literal long single quote",
+        { "include": "#single-squote-string-literal" },
+        { "include": "#single-dquote-string-literal" },
+        { "include": "#triple-squote-string-literal" },
+        { "include": "#triple-dquote-string-literal" },
+        { "include": "#triple-tick-string-literal" }
+      ]
+    },
+		"single-squote-string-literal": {
+			"name": "string.quoted.single.turtle",
+			"begin": "'",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.turtle"
+				}
+			},
+			"end": "'",
+			"endCaptures": {
+				"1": {
+					"name": "punctuation.definition.string.end.turtle"
+				},
+				"2": {
+					"name": "invalid.illegal.newline.turtle"
+				}
+			},
+			"patterns": [
+				{ "include": "#string-character-escape" }
+			]
+		},
+    "single-dquote-string-literal": {
+			"name": "string.quoted.double.turtle",
+			"begin": "\"",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.turtle"
+				}
+			},
+			"end": "\"",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end.turtle"
+				}
+			},
+			"patterns": [
+				{ "include": "#string-character-escape" }
+			]
+		},
+    "triple-squote-string-literal": {
+      "name": "string.quoted.triple.turtle",
+      "begin": "'''",
+      "end":   "'''",
+      "beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.turtle"
+				}
+			},
       "endCaptures": {
-        "1": {
-          "name": "string.quoted.triple.turtle"
-        },
-        "2": {
-          "name": "keyword.operator.turtle"
+				"0": {
+					"name": "punctuation.definition.string.end.turtle"
+				}
+			},
+      "patterns": [
+				{ "include": "#string-character-escape" }
+			]
+    },
+    "triple-dquote-string-literal": {
+      "name": "string.quoted.triple.turtle",
+      "begin": "\"\"\"",
+      "end":   "\"\"\"",
+      "beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.turtle"
+				}
+			},
+      "endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end.turtle"
+				}
+			},
+      "patterns": [
+				{ "include": "#string-character-escape" }
+			]
+    },
+    "triple-tick-string-literal": {
+      "name": "string.quoted.triple.turtle",
+      "begin": "```",
+      "end":   "```",
+      "beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.turtle"
+				}
+			},
+      "endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end.turtle"
+				}
+			},
+      "patterns": [
+				{ "include": "#string-character-escape" }
+			]
+    },
+    "string-character-escape": {
+			"name": "constant.character.escape.turtle",
+			"match": "\\\\(x\\h{2}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
+		},
+    "numeric": {
+      "patterns":[
+        { "include": "#integer" }
+      ]
+    },
+    "integer": {
+      "name": "constant.numeric.turtle",
+      "match": "[+-]?(?:\\d+|[0-9]+\\.[0-9]*|\\.[0-9]+(?:[eE][+-]?\\d+)?)"
+    },
+    "boolean": {
+      "name": "constant.language.sparql",
+      "match": "\\b(?i:true|false)\\b"
+    },
+    "language-tag": {
+      "name": "meta.string-literal-language-tag.turtle",
+      "match": "@(\\w+)",
+      "captures":{
+        "1":{
+          "name": "entity.name.class.turtle"
         }
-      },
-      "name": "string-long-single-quote.turtle"
-    },
-    {
-      "match": "(\"(?:(?:[^\\x22\\x5C\\xA\\xD])|\\\\[tbnrf\"'\\\\])*\")(@[a-zA-Z-]+)?",
-      "captures": {
-        "3": {
-          "name": "support.type.turtle"
-        },
-        "1": {
-          "name": "string.quoted.double.turtle"
-        },
-        "2": {
-          "name": "keyword.operator.turtle"
-        }
-      },
-      "comment": "String literal",
-      "name": "string.turtle"
-    },
-    {
-      "match": "('(?:(?:[^'\\x5C\\xA\\xD])|\\\\[tbnrf\"'\\\\])*')(@[a-zA-Z-]+)?",
-      "captures": {
-        "3": {
-          "name": "support.type.turtle"
-        },
-        "1": {
-          "name": "string.quoted.double.turtle"
-        },
-        "2": {
-          "name": "keyword.operator.turtle"
-        }
-      },
-      "comment": "String literal single quote",
-      "name": "string-single-quote.turtle"
-    },
-    {
-      "match": "#.*$",
-      "comment": "Comments",
-      "name": "comment.line.number-sign.turtle"
-    },
-    {
-      "match": "\\b[+-]?(?:\\d+|[0-9]+\\.[0-9]*|\\.[0-9]+(?:[eE][+-]?\\d+)?)\\b",
-      "comment": "Numeric literal",
-      "name": "constant.numeric.turtle"
-    },
-    {
-      "match": "\\b(?:true|false)\\b",
-      "comment": "Boolean",
-      "name": "constant.language.turtle"
+      }
     }
-  ],
-  "name": "Turtle",
-  "scopeName": "source.turtle"
+  }
 }

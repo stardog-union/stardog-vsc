@@ -34,6 +34,15 @@
           ".turtle"
         ],
         "configuration": "./language-configuration.json"
+      }, {
+        "id": "stardog-mapping-syntax",
+        "aliases": [
+          "Stardog Mapping Syntax"
+        ],
+        "extensions": [
+          ".sms"
+        ],
+        "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [
@@ -44,6 +53,11 @@
       },
       {
         "language": "turtle",
+        "scopeName": "source.turtle",
+        "path": "./syntaxes/turtle.tmLanguage.json"
+      },
+      {
+        "language": "stardog-mapping-syntax",
         "scopeName": "source.turtle",
         "path": "./syntaxes/turtle.tmLanguage.json"
       }

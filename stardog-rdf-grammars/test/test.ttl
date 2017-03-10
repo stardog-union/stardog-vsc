@@ -14,10 +14,7 @@
     a foaf:Person ;
     foaf:name "Spiderman", "Человек-паук"@ru .
 
-
-
-PREFIX
-BASE
+ foaf:mbox  <mailto:alice@example.org>
 
 # Numbers
 5
@@ -59,8 +56,33 @@ _:bob foaf:knows _:alice .
 
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
-[ foaf:name "Alice" ] foaf:knows [
+[ foaf:name "Alice" ] foaf:knows233 [
     foaf:name "Bob" ;
     foaf:knows [
         foaf:name "Eve" ] ;
     foaf:mbox <bob@example.com> ] .
+
+PREFIX : <http://example.org/stuff/1.0/>
+(1 [:p :q] ( 2 ) ) :p2 :q2 .
+
+@prefix : <http://example.org/stuff/1.0/> .
+(1 2.0 3E1) :p "w" .
+
+@prefix : <http://example.org/stuff/1.0/> .
+
+:a :b "The first line\nThe second line\n  more" .
+
+:a :b """The first line
+The second line
+  more""" .
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix ex: <http://example.org/stuff/1.0/> .
+
+<http://www.w3.org/TR/rdf-syntax-grammar>
+  dc:title "RDF/XML Syntax Specification (Revised)" ;
+  ex:editor [
+    ex:fullname "Dave Beckett";
+    ex:homePage <http://purl.org/net/dajobe/>
+  ] .
