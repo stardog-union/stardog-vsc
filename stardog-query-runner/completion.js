@@ -1,9 +1,13 @@
 // eslint-disable-next-line import/no-extraneous-dependencies, import/no-unresolved
 const vscode = require('vscode');
+const debounce = require('debounce-promise');
 
-const getNamespaces = (conn, database) => new Promise((resolve) => {
+// eslint-disable-next-line no-underscore-dangle
+const _getNamespaces = (conn, database) => new Promise((resolve) => {
   conn.getNamespaces({ database }, resolve);
 });
+
+const getNamespaces = debounce(_getNamespaces, 100);
 
 module.exports = class {
   constructor(connection, database) {

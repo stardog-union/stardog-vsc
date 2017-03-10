@@ -205,7 +205,7 @@ describe('stardog-query-runner extension', () => {
 
     it('shows a pick list of databases', (done) => {
       const context = pluginContext();
-      const pickItem = (label) => ({ label, description: '$(database)' });
+      const pickItem = label => ({ label, description: '$(database)' });
       simple.mock(commands, 'registerCommand').returnWith({ dispose: () => { } });
       simple.mock(workspace, 'getConfiguration').returnWith({
         password: 'password',
