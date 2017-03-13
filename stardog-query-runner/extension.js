@@ -76,9 +76,9 @@ class ResultProvider {
 
 // We want to keep a handle to these in case we ever need to
 // dispose of the old one, and add a new one in it's place
+let completionProvider = null;
 let onSendQuery = null;
 let onPickDatabase = null;
-let completionProvider = null;
 
 const validateSettings = (config = {}) => {
   const settings = ['endpoint', 'username', 'password', 'database'];
@@ -147,11 +147,6 @@ const init = (context, resultProvider) => {
   const config = workspace.getConfiguration(CONFIG_SECTION);
   const errors = exports.validateSettings(config);
 
-  // Make these no-ops by default. Wait for good settings before making them do anything.
-  // This is to prevent race conditions where the user tries to use one before everything
-  // is really ready to go.
-  onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () => { });
-  onPickDatabase = commands.registerCommand('stardog-query-runner.pickDatabase', () => { });
   commands.executeCommand('setContext', 'query-ready', false);
 
   if (errors) {
@@ -179,23 +174,22 @@ const init = (context, resultProvider) => {
     }))
     .then((db) => {
       if (!db) { throw Error('You must select a database for this plugin to function.'); }
-      // Make the menu item visible.
-      commands.executeCommand('setContext', 'query-ready', true);
 
       const status = window.createStatusBarItem(vscode.StatusBarAlignment.Right);
       status.text = `${db.label} $(database)`;
       status.command = 'stardog-query-runner.pickDatabase';
       status.show();
 
-      // Replace old commands with complete ones
-      disposeAll(onSendQuery, onPickDatabase, completionProvider);
       onSendQuery = commands.registerCommand('stardog-query-runner.sendQuery', () =>
-        exports.sendQuery(window, conn, db.label, resultProvider));
+        exports.sendQuery(window, conn, resultProvider, db.label));
       onPickDatabase = commands.registerCommand('stardog-query-runner.pickDatabase', () => {
         disposeAll(onSendQuery, onPickDatabase, status, completionProvider);
         exports.init(context, resultProvider);
       });
       completionProvider = languages.registerCompletionItemProvider('*', new CompletionProvider(conn, db.label), [':']);
+
+      // Make the commands available
+      commands.executeCommand('setContext', 'query-ready', true);
     })
     .catch((err) => {
       window.showErrorMessage(`Unrecoverable error detected.${err}`);
@@ -206,6 +200,7 @@ const init = (context, resultProvider) => {
 // this method is called when your extension is activated
 const activate = (context) => {
   console.log('stardog-query-runner is active!');
+  commands.executeCommand('setContext', 'query-ready', false);
   const resultProvider = new exports.ResultProvider();
   const registration = workspace.registerTextDocumentContentProvider('stardog-results', resultProvider);
   context.subscriptions.push(registration);
