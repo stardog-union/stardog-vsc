@@ -93,3 +93,18 @@ The second line
     THEN
       { ?x :hasUncle ?z }
   """
+
+  @prefix rule: <tag:stardog:api:rule:> .
+
+[] a rule:SPARQLRule ;
+  rule:content """
+    PREFIX :<urn:test:>
+      IF {
+            ?r a :Rectangle ;
+               :width ?w ;
+               :height ?h
+            BIND (?w * ?h AS ?area)
+          }
+      THEN {
+              ?r :area ?area
+          }"""
