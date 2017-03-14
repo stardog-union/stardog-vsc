@@ -43,6 +43,15 @@
           ".sms"
         ],
         "configuration": "./language-configuration.json"
+      }, {
+        "id": "stardog-rules-syntax",
+        "aliases": [
+          "Stardog Rules Syntax"
+        ],
+        "extensions": [
+          ".srs"
+        ],
+        "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [
@@ -60,6 +69,11 @@
         "language": "stardog-mapping-syntax",
         "scopeName": "source.sms",
         "path": "./syntaxes/stardog-mapping.tmLanguage.json"
+      },
+      {
+        "language": "stardog-rules-syntax",
+        "scopeName": "source.srs",
+        "path": "./syntaxes/stardog-rules.tmLanguage.json"
       }
     ]
   }
