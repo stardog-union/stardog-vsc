@@ -1,0 +1,4 @@
+IF
+  { ?x :hasFather ?y . ?y :hasBrother ?z }
+THEN
+  { ?x :hasUncle ?z }

@@ -6,6 +6,7 @@
     "ttl"
   ],
   "patterns": [
+    { "include": "#rule-constraint" },
     { "include": "#iriref" },
     { "include": "#prefix" },
     { "include": "#prefixed-name" },
@@ -183,6 +184,29 @@
           "name": "entity.name.class.turtle"
         }
       }
+    },
+    "rule-constraint": {
+      "name": "meta.rule-constraint.turtle",
+      "begin": "(rule:content) (\"\"\")",
+      "beginCaptures": {
+        "1": {
+          "patterns": [
+            { "include": "#prefixed-name" }
+          ]
+        },
+        "2": {
+          "name": "string.quoted.triple.turtle"
+        }
+      },
+      "end": "\"\"\"",
+      "endCaptures": {
+        "0": {
+          "name": "string.quoted.triple.turtle"
+        }
+      },
+      "patterns": [
+        { "include": "source.srs" }
+      ]
     }
   }
 }

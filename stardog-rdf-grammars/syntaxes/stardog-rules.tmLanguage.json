@@ -1,0 +1,19 @@
+{
+  "name": "Stardog Rules Syntax",
+  "scopeName": "source.srs",
+  "fileTypes": [
+    "srs"
+  ],
+  "patterns": [
+    { "include": "source.turtle" },
+    { "include": "source.sparql#variables" },
+    { "include": "source.sparql#expression-operators" },
+    { "include": "#rules-operators" }
+  ],
+  "repository": {
+    "rules-operators": {
+      "name": "keyword.control.srs",
+      "match": "\\b(?i:if|then)\\b"
+    }
+  }
+}

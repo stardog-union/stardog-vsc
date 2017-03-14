@@ -86,3 +86,10 @@ The second line
     ex:fullname "Dave Beckett";
     ex:homePage <http://purl.org/net/dajobe/>
   ] .
+
+  rule:content """
+    IF
+      { ?x :hasFather ?y . ?y :hasBrother ?z }
+    THEN
+      { ?x :hasUncle ?z }
+  """
