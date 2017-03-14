@@ -14,7 +14,7 @@ WHERE {
                  foaf:familyName ?family }
   } UNION {
     ?c !foaf:knows/foaf:knows? ?thing.
-    ?thing rdfs
+    ?thing
   } MINUS {
     ?thing rdfs:label "剛柔流"@jp
   }

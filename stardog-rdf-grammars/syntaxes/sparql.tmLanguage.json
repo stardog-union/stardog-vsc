@@ -22,11 +22,11 @@
       "match": "\\b(?i:concat|regex|asc|desc|bound|isiri|isuri|isblank|isliteral|isnumeric|str|lang|datatype|sameterm|langmatches|avg|count|group_concat|separator|max|min|sample|sum|iri|uri|bnode|strdt|uuid|struuid|strlang|strlen|substr|ucase|lcase|strstarts|strends|contains|strbefore|strafter|encode_for_uri|replace|abs|round|ceil|floor|rand|now|year|month|day|hours|minutes|seconds|timezone|tz|md5|sha1|sha256|sha384|sha512|coalesce|if)\\b"
     },
     "variables": {
-      "name": "variable.other.sparql",
+      "name": "constant.variable.sparql.turtle",
       "match": "(?<!\\w)[?$]\\w+"
     },
     "expression-operators": {
-      "name": "keyword.operator.sparql",
+      "name": "support.class.sparql",
       "match": "(?:\\|\\||&&|=|!=|<|>|<=|>=|\\*|\/|\\+|-|\\||\\^|\\?|\\!)"
     }
   }

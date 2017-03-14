@@ -17,11 +17,11 @@
   "uuid": "230498230498sdfkj8909-34df-23dfs",
   "repository": {
     "prefix": {
-      "name": "keyword.turtle",
+      "name": "keyword.operator.turtle",
       "match": "(?i:@?base|@?prefix)\\s"
     },
     "iriref": {
-      "name": "string.iri.turtle",
+      "name": "entity.name.type.iriref.turtle",
       "match": "<[^\\x20-\\x20<>\"{}|^`\\\\]*>"
     },
     "prefixed-name": {
@@ -29,10 +29,10 @@
       "match": "(\\w*:)(\\w*)",
       "captures": {
         "1": {
-          "name": "constant.other.turtle"
+          "name": "storage.type.PNAME_NS.turtle"
         },
         "2": {
-          "name": "entity.name.class.turtle"
+          "name": "support.variable.PN_LOCAL.turtle"
         }
       }
     },
