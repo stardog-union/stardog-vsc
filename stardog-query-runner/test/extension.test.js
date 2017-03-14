@@ -194,15 +194,6 @@ describe('stardog-query-runner extension', () => {
       });
     });
 
-    it('registers commands even if there is an error', () => {
-      const context = pluginContext();
-      simple.mock(commands, 'registerCommand').returnWith(null);
-      simple.mock(workspace, 'getConfiguration').returnWith(undefined);
-      simple.mock(window, 'showErrorMessage').resolveWith(null);
-      extension.init(context, new ResultProvider());
-      expect(commands.registerCommand.callCount).to.be(2);
-    });
-
     it('shows a pick list of databases', (done) => {
       const context = pluginContext();
       const pickItem = label => ({ label, description: '$(database)' });
@@ -251,14 +242,11 @@ describe('stardog-query-runner extension', () => {
       extension.init(context, new ResultProvider());
 
       setImmediate(() => {
-        expect(disposeable.dispose.called).to.be.true();
-        // Once for the stub, and again for the real command after the promise resolves.
-        // times 2 for the two different commands exposed
-        expect(commands.registerCommand.callCount).to.be(4);
+        expect(commands.registerCommand.callCount).to.be(2);
         const [
           name,
           handler,
-        ] = commands.registerCommand.calls[2].args;
+        ] = commands.registerCommand.calls[0].args;
         handler();
         expect(name).to.be('stardog-query-runner.sendQuery');
         expect(extension.sendQuery.called).to.be.true();
@@ -288,14 +276,11 @@ describe('stardog-query-runner extension', () => {
       extension.init(context, new ResultProvider());
 
       setImmediate(() => {
-        expect(disposeable.dispose.called).to.be.true();
-        // Once for the stub, and again for the real command after the promise resolves.
-        // times 2 for the two different commands exposed
-        expect(commands.registerCommand.callCount).to.be(4);
+        expect(commands.registerCommand.callCount).to.be(2);
         const [
           name,
           handler,
-        ] = commands.registerCommand.calls[3].args;
+        ] = commands.registerCommand.calls[1].args;
         handler();
         expect(name).to.be('stardog-query-runner.pickDatabase');
         expect(extension.init.callCount).to.be(2);
