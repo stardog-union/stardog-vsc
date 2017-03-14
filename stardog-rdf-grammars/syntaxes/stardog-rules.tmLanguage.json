@@ -5,10 +5,8 @@
     "srs"
   ],
   "patterns": [
-    { "include": "source.turtle" },
-    { "include": "source.sparql#variables" },
-    { "include": "source.sparql#expression-operators" },
-    { "include": "#rules-operators" }
+    { "include": "#rules-operators" },
+    { "include": "source.sparql" }
   ],
   "repository": {
     "rules-operators": {
