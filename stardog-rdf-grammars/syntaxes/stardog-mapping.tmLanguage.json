@@ -1,0 +1,11 @@
+{
+  "name": "Stardog Mapping Syntax",
+  "scopeName": "source.sms",
+  "fileTypes": [
+    "sms"
+  ],
+  "patterns": [
+    { "include": "source.turtle" }
+  ], 
+  "uuid": "92374892374-234d-d87520935"
+}

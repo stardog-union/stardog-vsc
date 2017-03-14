@@ -58,8 +58,8 @@
       },
       {
         "language": "stardog-mapping-syntax",
-        "scopeName": "source.turtle",
-        "path": "./syntaxes/turtle.tmLanguage.json"
+        "scopeName": "source.sms",
+        "path": "./syntaxes/stardog-mapping.tmLanguage.json"
       }
     ]
   }
