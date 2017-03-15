@@ -81,7 +81,7 @@ let onSendQuery = null;
 let onPickDatabase = null;
 
 const validateSettings = (config = {}) => {
-  const settings = ['endpoint', 'username', 'password', 'database'];
+  const settings = ['endpoint', 'username', 'password'];
   const errors = [];
 
   settings.forEach((item) => {
