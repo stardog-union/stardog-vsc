@@ -4,7 +4,7 @@
   "description": "Run RDF queries from your VSC files.",
   "version": "0.0.1",
   "publisher": "stardog-union",
-  "icon": "./static/stardog-logo.png",
+  "icon": "static/stardog-logo.png",
   "engines": {
     "vscode": "^1.5.0"
   },
