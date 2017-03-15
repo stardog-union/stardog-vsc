@@ -24,7 +24,7 @@ describe('stardog-query-runner extension', () => {
   describe('validateSettings()', () => {
     it('returns a list of errors if there are no settings', () => {
       const errors = extension.validateSettings();
-      expect(errors).to.have.length(4);
+      expect(errors).to.have.length(3);
     });
 
     it('returns specific errors', () => {
@@ -32,7 +32,6 @@ describe('stardog-query-runner extension', () => {
         password: '',
         endpoint: null,
         username: 'username',
-        database: 'database',
       });
       expect(errors).to.have.length(2);
       expect(errors[0]).to.be('endpoint');
@@ -44,7 +43,6 @@ describe('stardog-query-runner extension', () => {
         password: 'password',
         endpoint: 'endpoint',
         username: 'username',
-        database: 'database',
       });
       expect(errors).to.be.null();
     });
@@ -202,7 +200,6 @@ describe('stardog-query-runner extension', () => {
         password: 'password',
         endpoint: 'endpoint',
         username: 'username',
-        database: 'database',
       });
       simple.mock(Connection.prototype, 'listDBs').callbackWith({
         databases: ['1', '2', '3'],
@@ -232,7 +229,6 @@ describe('stardog-query-runner extension', () => {
         password: 'password',
         endpoint: 'endpoint',
         username: 'username',
-        database: 'database',
       });
       simple.mock(Connection.prototype, 'listDBs').callbackWith({
         databases: ['1', '2', '3'],
@@ -265,7 +261,6 @@ describe('stardog-query-runner extension', () => {
         password: 'password',
         endpoint: 'endpoint',
         username: 'username',
-        database: 'database',
       });
       simple.mock(Connection.prototype, 'listDBs').callbackWith({
         databases: ['1', '2', '3'],
@@ -299,7 +294,6 @@ describe('stardog-query-runner extension', () => {
         password: 'password',
         endpoint: 'endpoint',
         username: 'username',
-        database: 'database',
       });
       simple.mock(Connection.prototype, 'listDBs').callbackWith({
         databases: ['1', '2', '3'],

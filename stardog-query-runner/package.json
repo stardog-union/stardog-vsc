@@ -42,11 +42,6 @@
           "default": null,
           "description": "User name to authenticate to the database."
         },
-        "stardog.database": {
-          "type": "string",
-          "default": null,
-          "description": "Database name to query."
-        },
         "stardog.password": {
           "type": "string",
           "default": null,
