@@ -34,17 +34,17 @@
       "properties": {
         "stardog.endpoint": {
           "type": "string",
-          "default": null,
+          "default": "http://localhost:5820",
           "description": "Database endpoint to query."
         },
         "stardog.username": {
           "type": "string",
-          "default": null,
+          "default": "admin",
           "description": "User name to authenticate to the database."
         },
         "stardog.password": {
           "type": "string",
-          "default": null,
+          "default": "admin",
           "description": "Password to use to authenticate to the database."
         }
       }
