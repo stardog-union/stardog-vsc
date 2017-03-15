@@ -1,16 +1,17 @@
-# stardog-query-runner README
+# Stardog Query Runner
 
-This is the README for your extension "stardog-query-runner". After writing up a brief description, we recommend including the following sections.
+Execute SPARQL queries against a live Stardog database inside Visual Studio Code!
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Stardog Union's Query Runner extension lets you execute SPARQL queries against a Stardog database and see the results as a table, all within Visual Studio Code, so you can experiment with writing queries and see their results all without leaving your editor.
 
-For example if there is an image subfolder under your extension project workspace:
+![Execute SPARQL queries and see tabular results](./static/execute-query.gif)
 
-\!\[feature X\]\(images/feature-x.png\)
+Query Runner is also packaged together with several RDF language highlighters, complete with symbol completion for prefixes, to make writing RDF and queries that much more pleasant.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+![Intellisense](./static/intellisense.gif)
+![Turtle syntax highlighting](./static/ttl-syntax.png)
 
 ## Requirements
 
@@ -18,14 +19,12 @@ If you have any requirements or dependencies, add a section describing those and
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `stardog.endpoint`: Database endpoint to query.
+* `stardog.username`: User name to authenticate to the database.
+* `stardog.database`: Database name to query.
+* `stardog.password`: Password to use to authenticate to the database.
 
 ## Known Issues
 
@@ -48,18 +47,5 @@ Fixed issue #.
 Added features X, Y, and Z.
 
 -----------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
 **Enjoy!**

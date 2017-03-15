@@ -4,6 +4,7 @@
   "description": "Run RDF queries from your VSC files.",
   "version": "0.0.1",
   "publisher": "stardog-union",
+  "icon": "./static/stardog-logo.png",
   "engines": {
     "vscode": "^1.5.0"
   },
@@ -11,7 +12,7 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onLanguage:sparql"
   ],
   "main": "./extension",
   "contributes": {
@@ -89,6 +90,9 @@
     "typescript": "2.0.3",
     "vscode": "1.0.5"
   },
+  "extensionDependencies": [
+    "stardog-union.stardog-rdf-grammars"
+  ],
   "dependencies": {
     "debounce-promise": "3.0.x",
     "stardog": "0.3.1"
