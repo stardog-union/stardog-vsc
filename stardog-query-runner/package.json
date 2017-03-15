@@ -21,7 +21,7 @@
         "title": "Stardog: Execute query",
         "icon": {
           "dark": "./static/white.svg",
-          "light": "./static.black.svg"
+          "light": "./static/black.svg"
         }
       },
       {
