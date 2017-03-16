@@ -103,7 +103,7 @@ describe('stardog-query-runner extension', () => {
         },
       };
 
-      extension.sendQuery(win, conn, 'myDB', {});
+      extension.sendQuery(win, conn, {}, 'myDB');
       expect(query.called).to.be.true();
       expect(win.activeTextEditor.document.getText.lastCall.args).to.eql([undefined]);
       expect(query.lastCall.args[0]).to.eql({
@@ -129,7 +129,7 @@ describe('stardog-query-runner extension', () => {
         },
       };
 
-      extension.sendQuery(win, conn, 'myDB', {});
+      extension.sendQuery(win, conn, {}, 'myDB');
       expect(query.called).to.be.true();
       expect(win.activeTextEditor.document.getText.lastCall.args).to.eql([selection]);
       expect(query.lastCall.args[0]).to.eql({
@@ -151,7 +151,7 @@ describe('stardog-query-runner extension', () => {
         showErrorMessage: simple.mock(),
       };
 
-      extension.sendQuery(win, conn, 'myDB', {});
+      extension.sendQuery(win, conn, {}, 'myDB');
       expect(win.showErrorMessage.called).to.be.true();
     });
   });
@@ -350,7 +350,7 @@ describe('stardog-query-runner extension', () => {
     const provider = new ResultProvider();
     simple.mock(provider, 'setData');
 
-    extension.sendQuery(win, conn, 'myDB', provider);
+    extension.sendQuery(win, conn, provider, 'myDB');
     expect(provider.setData.called).to.be.true();
     expect(provider.columns).to.eql(['s', 'o', 'p']);
     expect(provider.values).to.eql([1, 2, 3]);
@@ -377,7 +377,7 @@ describe('stardog-query-runner extension', () => {
     };
     const provider = new ResultProvider();
 
-    extension.sendQuery(win, conn, 'myDB', provider);
+    extension.sendQuery(win, conn, provider, 'myDB');
     const args = commands.executeCommand.lastCall.args;
     expect(args[0]).to.be('vscode.previewHtml');
     expect(args[1].toString()).to.be('stardog-results://mydb/results');
