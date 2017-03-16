@@ -110,7 +110,7 @@ const buildConnection = (config = {}) => {
   return conn;
 };
 
-const sendQuery = (win, conn, database, provider) => {
+const sendQuery = (win, conn, provider, database) => {
   const editor = win.activeTextEditor;
   if (!editor || !conn) { return; }
 
