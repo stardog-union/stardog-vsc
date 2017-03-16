@@ -186,7 +186,7 @@ const init = (context, resultProvider) => {
         disposeAll(onSendQuery, onPickDatabase, status, completionProvider);
         exports.init(context, resultProvider);
       });
-      completionProvider = languages.registerCompletionItemProvider('*', new CompletionProvider(conn, db.label), [':']);
+      completionProvider = languages.registerCompletionItemProvider('sparql', new CompletionProvider(conn, db.label), [':']);
 
       // Make the commands available
       commands.executeCommand('setContext', 'query-ready', true);
