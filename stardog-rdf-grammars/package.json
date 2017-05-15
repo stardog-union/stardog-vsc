@@ -4,26 +4,6 @@
   "description": "Syntax highlighting for SPARQL, Turtle, Stardog Rules Syntax, and other RDF languages",
   "version": "0.0.1",
   "publisher": "stardog-union",
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test"
-  },
-  "devDependencies": {
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.5",
-    "mocha": "^2.3.3",
-    "@types/node": "^6.0.40",
-    "@types/mocha": "^2.2.32"
-  },
-  "main": "./out/src/extension",
-  "activationEvents": [
-    "onLanguage:sparql",
-    "onLanguage:turtle",
-    "onLanguage:stardog-mapping-syntax",
-    "onLanguage:stardog-rules-syntax"
-  ],
   "engines": {
     "vscode": "^1.5.0"
   },
@@ -43,8 +23,7 @@
           ".sparql"
         ],
         "configuration": "./language-configuration.json"
-      },
-      {
+      }, {
         "id": "turtle",
         "aliases": [
           "TURTLE",
@@ -55,8 +34,7 @@
           ".turtle"
         ],
         "configuration": "./language-configuration.json"
-      },
-      {
+      }, {
         "id": "stardog-mapping-syntax",
         "aliases": [
           "Stardog Mapping Syntax"
@@ -65,8 +43,7 @@
           ".sms"
         ],
         "configuration": "./language-configuration.json"
-      },
-      {
+      }, {
         "id": "stardog-rules-syntax",
         "aliases": [
           "Stardog Rules Syntax"
