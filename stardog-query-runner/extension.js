@@ -61,9 +61,9 @@ class ResultProvider {
           </thead>
           <tbody>
             ${this.values.map(v =>
-        `<tr>
-                ${this.columns.map(c => `<td>${v[c].value}</td>`).join('')}
-              </tr>`).join('')}
+            `<tr>
+                ${this.columns.map(c => `<td>${v[c] ? v[c].value : ''}</td>`).join('')}
+            </tr>`).join('')}
           </tbody>
         </table>
       </body>
@@ -115,7 +115,8 @@ const sendQuery = (win, conn, provider, database) => {
   if (!editor || !conn) { return; }
 
   const doc = editor.document;
-  const query = doc.getText(editor.selection.isEmpty ? undefined : editor.selection);
+  const text = doc.getText(editor.selection.isEmpty ? undefined : editor.selection);
+  const query = (text || '').split('\n').join('');
 
   conn.query({
     query,

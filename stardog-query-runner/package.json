@@ -62,7 +62,8 @@
         {
           "command": "stardog-query-runner.sendQuery",
           "when": "query-ready && editorLangId == sparql"
-        }, {
+        },
+        {
           "command": "stardog-query-runner.pickDatabase",
           "when": "query-ready && editorLangId == sparql"
         }
