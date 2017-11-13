@@ -1,0 +1,97 @@
+{
+    "name": "stardog-vsc",
+    "displayName": "stardog-vsc",
+    "description": "Stardog utility for querying, syntax highlighting, and autocompletion.",
+    "version": "0.0.1",
+    "publisher": "stardog-union",
+    "engines": {
+        "vscode": "^1.18.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onLanguage:sparql"
+    ],
+    "main": "./extension",
+    "contributes": {
+        "keybindings": [
+            {
+                "command": "stardog-vsc.executeQuery",
+                "key": "ctrl+e",
+                "mac": "cmd+e",
+                "when": "editorLangId == sparql"
+            }
+        ],
+        "commands": [
+            {
+                "command": "stardog-vsc.executeQuery",
+                "title": "Stardog: Execute query",
+                "icon": {
+                    "dark": "./static/white.svg",
+                    "light": "./static/black.svg"
+                }
+            },
+            {
+                "command": "stardog-vsc.pickDatabase",
+                "title": "Stardog: Pick database"
+            }
+        ],
+        "configuration": {
+            "title": "Stardog Query Runner Settings",
+            "properties": {
+                "stardog.endpoint": {
+                    "type": "string",
+                    "default": "http://localhost:5820",
+                    "description": "Database endpoint to query."
+                },
+                "stardog.username": {
+                    "type": "string",
+                    "default": "admin",
+                    "description": "User name to authenticate to the database."
+                },
+                "stardog.password": {
+                    "type": "string",
+                    "default": "admin",
+                    "description": "Password to use to authenticate to the database."
+                }
+            }
+        },
+        "menus": {
+            "editor/title": [
+                {
+                    "command": "stardog-vsc.executeQuery",
+                    "group": "navigation",
+                    "when": "editorLangId == sparql"
+                }
+            ],
+            "commandPalette": [
+                {
+                    "command": "stardog-vsc.executeQuery",
+                    "when": "editorLangId == sparql"
+                },
+                {
+                    "command": "stardog-vsc.pickDatabase",
+                    "when": "query-ready && editorLangId == sparql"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "extensionDependencies": [
+        "stardog-union.stardog-rdf-grammars"
+    ],
+    "devDependencies": {
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6",
+        "eslint": "^4.6.1",
+        "@types/node": "^7.0.43",
+        "@types/mocha": "^2.2.42"
+    },
+    "dependencies": {
+        "stardog": "^1.0.0-rc3"
+    }
+}
