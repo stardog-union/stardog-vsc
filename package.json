@@ -5,7 +5,7 @@
     "version": "0.0.1",
     "publisher": "stardog-union",
     "engines": {
-        "vscode": "^1.18.0"
+        "vscode": "^1.9.0"
     },
     "categories": [
         "Other"
@@ -35,6 +35,10 @@
             {
                 "command": "stardog-vsc.pickDatabase",
                 "title": "Stardog: Pick database"
+            },
+            {
+                "command": "stardog-vsc.prependPrefixes",
+                "title": "Stardog: Populate Prefixes"
             }
         ],
         "configuration": {

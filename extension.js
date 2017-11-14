@@ -1,11 +1,14 @@
 const vscode = require('vscode');
 
 const executeQuery = require('./commands/executeQuery');
+const prependPrefixes = require('./commands/prependPrefixes');
 const ResultProvider = require('./lib/ResultProvider');
-const CompletionItemProvider = require('./lib/ItemCompletionProviders');
-const Connection = require('./lib/Connection');
+const CompletionItemProvider = require('./lib/SPARQLCompletionProvider');
+const { Connection } = require('stardog');
 
 function activate(context) {
+    const { username, password, endpoint } = vscode.workspace.getConfiguration('stardog');
+
     const resultProvider = new ResultProvider();
     const completionItemProvider = new CompletionItemProvider();
     vscode.workspace.registerTextDocumentContentProvider('stardog-results', resultProvider);
@@ -15,11 +18,12 @@ function activate(context) {
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
     let disposable = vscode.commands.registerCommand('stardog-vsc.executeQuery', () => {
-        const { username, password, endpoint } = vscode.workspace.getConfiguration('stardog');
         console.log(username, password, endpoint);
         executeQuery({ username, password, endpoint }, resultProvider);
     });
-
+    vscode.commands.registerCommand('stardog-vsc.prependPrefixes', () => {
+        prependPrefixes(new Connection({ username, password, endpoint }), 'exercise');
+    });
     context.subscriptions.push(disposable);
 }
 exports.activate = activate;
