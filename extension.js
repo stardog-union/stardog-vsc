@@ -2,11 +2,14 @@ const vscode = require('vscode');
 
 const executeQuery = require('./commands/executeQuery');
 const ResultProvider = require('./lib/ResultProvider');
+const CompletionItemProvider = require('./lib/ItemCompletionProviders');
 const Connection = require('./lib/Connection');
 
 function activate(context) {
     const resultProvider = new ResultProvider();
-    const registration = vscode.workspace.registerTextDocumentContentProvider('stardog-results', resultProvider);
+    const completionItemProvider = new CompletionItemProvider();
+    vscode.workspace.registerTextDocumentContentProvider('stardog-results', resultProvider);
+    vscode.languages.registerCompletionItemProvider('sparql', completionItemProvider);
 
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
