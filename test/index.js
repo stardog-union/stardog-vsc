@@ -1,6 +1,4 @@
 //
-// PLEASE DO NOT MODIFY / DELETE UNLESS YOU KNOW WHAT YOU ARE DOING
-//
 // This file is providing the test runner to use when running extension tests.
 // By default the test runner in use is Mocha based.
 //
@@ -12,11 +10,9 @@
 
 const testRunner = require('vscode/lib/testrunner');
 
-// You can directly control Mocha options by uncommenting the following lines
-// See https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically#set-options for more info
 testRunner.configure({
-    ui: 'tdd', 		// the TDD UI is being used in extension.test.js (suite, test, etc.)
-    useColors: true // colored output from test results
+  ui: 'bdd',
+  useColors: true
 });
 
 module.exports = testRunner;
