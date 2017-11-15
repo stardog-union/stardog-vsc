@@ -5,7 +5,7 @@
     "version": "0.0.1",
     "publisher": "stardog-union",
     "engines": {
-        "vscode": "^1.9.0"
+        "vscode": "^1.11.0"
     },
     "categories": [
         "Other"
@@ -33,8 +33,12 @@
                 }
             },
             {
-                "command": "stardog-vsc.pickDatabase",
-                "title": "Stardog: Pick database"
+                "command": "stardog-vsc.changeDatabase",
+                "title": "Stardog: Change database"
+            },
+            {
+                "command": "stardog-vsc.changeEndpoint",
+                "title": "Stardog: Change endpoint"
             },
             {
                 "command": "stardog-vsc.prependPrefixes",
@@ -42,22 +46,23 @@
             }
         ],
         "configuration": {
-            "title": "Stardog Query Runner Settings",
+            "title": "Stardog Query Editor Settings",
             "properties": {
                 "stardog.endpoint": {
                     "type": "string",
-                    "default": "http://localhost:5820",
                     "description": "Database endpoint to query."
                 },
                 "stardog.username": {
                     "type": "string",
-                    "default": "admin",
                     "description": "User name to authenticate to the database."
                 },
                 "stardog.password": {
                     "type": "string",
-                    "default": "admin",
                     "description": "Password to use to authenticate to the database."
+                },
+                "stardog.database": {
+                    "type": "string",
+                    "description": "Name of the database to query."
                 }
             }
         },
@@ -75,8 +80,12 @@
                     "when": "editorLangId == sparql"
                 },
                 {
-                    "command": "stardog-vsc.pickDatabase",
-                    "when": "query-ready && editorLangId == sparql"
+                    "command": "stardog-vsc.changeDatabase",
+                    "when": "CONNECTION_ESTABLISHED && editorLangId == sparql"
+                },
+                {
+                    "command": "stardog-vsc.changeEndpoint",
+                    "when": "editorLangId == sparql"
                 }
             ]
         }

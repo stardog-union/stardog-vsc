@@ -1,31 +1,33 @@
 const vscode = require('vscode');
 
-const executeQuery = require('./commands/executeQuery');
-const prependPrefixes = require('./commands/prependPrefixes');
+const ConfigManager = require('./lib/ConfigManager');
 const ResultProvider = require('./lib/ResultProvider');
+const Commander = require('./lib/Commander');
 const CompletionItemProvider = require('./lib/SPARQLCompletionProvider');
-const { Connection } = require('stardog');
+const { EXTENSION_PREFIX, CONNECTION_ESTABLISHED } = require('./lib/constants');
+
+const configManager = new ConfigManager({ env: vscode });
+const resultProvider = new ResultProvider({ env: vscode });
+const commander = new Commander({ configManager, resultProvider, env: vscode });
+const exposedCommands = Object.getOwnPropertyNames(Commander.prototype).filter((key) => {
+    return key !== 'constructor' && !key.startsWith('_') && typeof Commander.prototype[key] === 'function';
+});
+const completionItemProvider = new CompletionItemProvider();
 
 function activate(context) {
-    const { username, password, endpoint } = vscode.workspace.getConfiguration('stardog');
-
-    const resultProvider = new ResultProvider();
-    const completionItemProvider = new CompletionItemProvider();
-    vscode.workspace.registerTextDocumentContentProvider('stardog-results', resultProvider);
+    vscode.commands.executeCommand('setContext', CONNECTION_ESTABLISHED, false);
+    vscode.workspace.registerTextDocumentContentProvider(EXTENSION_PREFIX, resultProvider);
     vscode.languages.registerCompletionItemProvider('sparql', completionItemProvider);
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('stardog-vsc.executeQuery', () => {
-        console.log(username, password, endpoint);
-        executeQuery({ username, password, endpoint }, resultProvider);
-    });
-    vscode.commands.registerCommand('stardog-vsc.prependPrefixes', () => {
-        prependPrefixes(new Connection({ username, password, endpoint }), 'exercise');
-    });
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(
+        ...exposedCommands.map((command) => {
+            return vscode.commands.registerCommand(
+                `${EXTENSION_PREFIX}.${command}`, commander[command].bind(commander)
+            );
+        })
+    );
 }
+
 exports.activate = activate;
 
 function deactivate() {
