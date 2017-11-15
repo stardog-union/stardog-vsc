@@ -1,0 +1,5 @@
+select distinct ?objprop ?label 
+where { 
+  ?objprop a owl:ObjectProperty . 
+  OPTIONAL { ?objprop rdfs:label ?label } 
+}

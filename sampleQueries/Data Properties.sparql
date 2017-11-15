@@ -1,0 +1,5 @@
+select distinct ?dataprop ?label 
+where { 
+  ?dataprop a owl:DatatypeProperty . 
+  OPTIONAL { ?dataprop rdfs:label ?label } 
+}

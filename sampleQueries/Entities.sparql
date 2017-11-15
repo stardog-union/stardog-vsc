@@ -1,0 +1,6 @@
+select distinct ?entity ?elabel ?type ?tlabel 
+where { 
+  ?entity a ?type . 
+  OPTIONAL { ?entity rdfs:label ?elabel } . 
+  OPTIONAL { ?type rdfs:label ?tlabel } 
+}
