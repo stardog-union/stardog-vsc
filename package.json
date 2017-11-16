@@ -8,6 +8,8 @@
         "vscode": "^1.11.0"
     },
     "categories": [
+        "Extension Packs",
+        "Languages",
         "Other"
     ],
     "activationEvents": [
@@ -20,6 +22,18 @@
                 "command": "stardog-vsc.executeQuery",
                 "key": "ctrl+e",
                 "mac": "cmd+e",
+                "when": "editorLangId == sparql"
+            },
+            {
+                "command": "stardog-vsc.foldPrefixes",
+                "key": "ctrl+alt+f",
+                "mac": "cmd+alt+f",
+                "when": "editorLangId == sparql"
+            },
+            {
+                "command": "stardog-vsc.unfoldPrefixes",
+                "key": "ctrl+alt+u",
+                "mac": "cmd+alt+u",
                 "when": "editorLangId == sparql"
             }
         ],
@@ -43,6 +57,14 @@
             {
                 "command": "stardog-vsc.prependPrefixes",
                 "title": "Stardog: Populate Prefixes"
+            },
+            {
+                "command": "stardog-vsc.foldPrefixes",
+                "title": "Stardog: Fold Prefixes"
+            },
+            {
+                "command": "stardog-vsc.unfoldPrefixes",
+                "title": "Stardog: Unfold Prefixes"
             }
         ],
         "configuration": {
@@ -85,6 +107,18 @@
                 },
                 {
                     "command": "stardog-vsc.changeEndpoint",
+                    "when": "editorLangId == sparql"
+                },
+                {
+                    "command": "stardog-vsc.prependPrefixes",
+                    "when": "editorLangId == sparql"
+                },
+                {
+                    "command": "stardog-vsc.foldPrefixes",
+                    "when": "editorLangId == sparql"
+                },
+                {
+                    "command": "stardog-vsc.unfoldPrefixes",
                     "when": "editorLangId == sparql"
                 }
             ]
