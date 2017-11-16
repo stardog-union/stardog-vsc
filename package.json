@@ -5,7 +5,7 @@
     "version": "0.0.1",
     "publisher": "stardog-union",
     "engines": {
-        "vscode": "^1.11.0"
+        "vscode": "^1.9.0"
     },
     "categories": [
         "Extension Packs",
@@ -56,15 +56,19 @@
             },
             {
                 "command": "stardog-vsc.prependPrefixes",
-                "title": "Stardog: Populate Prefixes"
+                "title": "Stardog: Populate prefixes"
             },
             {
                 "command": "stardog-vsc.foldPrefixes",
-                "title": "Stardog: Fold Prefixes"
+                "title": "Stardog: Fold prefixes"
             },
             {
                 "command": "stardog-vsc.unfoldPrefixes",
-                "title": "Stardog: Unfold Prefixes"
+                "title": "Stardog: Unfold prefixes"
+            },
+            {
+                "command": "stardog-vsc.insertSampleQuery",
+                "title": "Stardog: Insert sample query"
             }
         ],
         "configuration": {

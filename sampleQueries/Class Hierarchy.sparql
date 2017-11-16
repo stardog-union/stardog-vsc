@@ -1,0 +1,6 @@
+select distinct ?type ?label ?supertype 
+where { 
+  { ?type a owl:Class . } UNION { ?ind a ?type . } . 
+  OPTIONAL { ?type rdfs:subClassOf ?supertype } . 
+  OPTIONAL { ?type rdfs:label ?label } 
+} ORDER BY ?type

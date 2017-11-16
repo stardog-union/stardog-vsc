@@ -1,0 +1,5 @@
+select distinct ?p ?label 
+where { 
+  ?s ?p ?o . 
+  OPTIONAL { ?p rdfs:label ?label } 
+}
