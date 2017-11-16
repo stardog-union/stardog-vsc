@@ -1,65 +1,72 @@
-# stardog-vsc README
+# The Stardog extension for VSCode
 
-This is the README for your extension "stardog-vsc". After writing up a brief description, we recommend including the following sections.
+The Stardog extension makes it easy to build and execute queries into Stardog.
 
-## Features
+* Connect to Stardog
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+* Execute queries and view results.
 
-For example if there is an image subfolder under your extension project workspace:
+* Quickly insert sample queries.
 
-\!\[feature X\]\(images/feature-x.png\)
+* Autopopulate and collapse prefixes.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+* Syntax highlighting for SPARQL, OWL, and Turtle.
 
-## Requirements
+>The extension is only active in `.sparql` files. If it seems the extension
+is missing, ensure your file is saved as `.sparql`.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Commands
+
+All commands can be executed from the command palette
+`View -> Command Palette` (`cmd+shift+p`)
+
+All available commands:
+
+* Stardog: Change endpoint
+* Stardog: Change database
+* Stardog: Execute query
+* Stardog: Prepend prefixes
+* Stardog: Collapse prefixes
+
+### Connect to Stardog
+
+The extension stores your Stardog connection in its configuration. If no configuration
+exists, activating the extension (by opening a `.sparql` file) will prompt you for
+an endpoint, username, password, and database name.
+
+To manually prompt a change to your endpoint or database, run `Stardog: Change endpoint`
+or `Stardog: Change database`.
+
+### Execute query
+
+Execute a query using the hotkey (`cmd+e` by default), clicking the rocket icon in
+the top right corner of your editor, or by running `Stardog: Execute query` from
+the command palette.
+
+If there is an active text selection when running the command, only the selected
+text will be sent as a query, otherwise the entire file will be sent.
+
+### Insert sample queries
+
+Choose from sample queries to insert in your document by running
+`Stardog: Insert sample queries` from the command palette.
+
+### Autopopulate prefixes
+
+Retrieve namespaces from your current database and prepend them to your
+file as prefixes by running `Stardog: Prepend prefixes` from the command palette.
+
+### Collapse prefixes
+
+Prefixes become collapsable blocks when surrounded by `#region`...`#endregion`. You
+can automatically insert these tags and collapse your prefixes by running
+`Stardog: Collapse prefixes` from the command palette.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+* `stardog.database`: "databaseName"
+* `stardog.endpoint`: "http://localhost:5820"
+* `stardog.username`: "admin"
+* `stardog.password`: "admin"
