@@ -8,7 +8,7 @@ The Stardog extension makes it easy to build and execute queries into Stardog.
 
 * Quickly insert sample queries.
 
-* Autopopulate and collapse prefixes.
+* Autopopulate and fold/unfold prefixes.
 
 * Syntax highlighting for SPARQL, OWL, and Turtle.
 
@@ -26,11 +26,12 @@ All available commands:
 * Stardog: Change database
 * Stardog: Execute query
 * Stardog: Prepend prefixes
-* Stardog: Collapse prefixes
+* Stardog: Fold prefixes
+* Stardog: Unfold prefixes
 
 ### Connect to Stardog
 
-The extension stores your Stardog connection in its configuration. If no configuration
+The extension stores your connection settings in your workspace settings. If no configuration
 exists, activating the extension (by opening a `.sparql` file) will prompt you for
 an endpoint, username, password, and database name.
 
@@ -56,11 +57,12 @@ Choose from sample queries to insert in your document by running
 Retrieve namespaces from your current database and prepend them to your
 file as prefixes by running `Stardog: Prepend prefixes` from the command palette.
 
-### Collapse prefixes
+### Fold/unfold prefixes
 
-Prefixes become collapsable blocks when surrounded by `#region`...`#endregion`. You
-can automatically insert these tags and collapse your prefixes by running
-`Stardog: Collapse prefixes` from the command palette.
+Prefixes become foldable blocks when surrounded by `#region`...`#endregion`. You
+can automatically insert these tags and fold your prefixes by running
+`Stardog: Fold prefixes` from the command palette, and unfold with
+`Stardog: Unfold prefixes`.
 
 ## Extension Settings
 
