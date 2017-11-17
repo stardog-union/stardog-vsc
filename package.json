@@ -118,6 +118,10 @@
                     "when": "editorLangId == sparql"
                 },
                 {
+                    "command": "stardog-vsc.insertSampleQuery",
+                    "when": "editorLangId == sparql"
+                },
+                {
                     "command": "stardog-vsc.foldPrefixes",
                     "when": "editorLangId == sparql"
                 },
