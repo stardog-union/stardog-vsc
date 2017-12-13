@@ -115,8 +115,7 @@ const sendQuery = (win, conn, provider, database) => {
   if (!editor || !conn) { return; }
 
   const doc = editor.document;
-  const text = doc.getText(editor.selection.isEmpty ? undefined : editor.selection);
-  const query = (text || '').split('\n').join('');
+  const query = doc.getText(editor.selection.isEmpty ? undefined : editor.selection);
 
   conn.query({
     query,
