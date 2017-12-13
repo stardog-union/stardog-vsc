@@ -2,7 +2,7 @@
   "name": "stardog-rdf-grammars",
   "displayName": "Stardog RDF Grammars",
   "description": "Syntax highlighting for SPARQL, Turtle, Stardog Rules Syntax, and other RDF languages",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "publisher": "stardog-union",
   "engines": {
     "vscode": "^1.5.0"
