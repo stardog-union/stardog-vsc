@@ -38,4 +38,4 @@ Open a file with an extension that matches your language, et voila!
 
 ## License
 
-[Apache 2.0](LICENSE)
+[Apache 2.0](https://github.com/stardog-union/stardog-vsc/raw/master/stardog-rdf-grammars/LICENSE)
