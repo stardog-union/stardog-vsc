@@ -1,5 +1,6 @@
 {
   "name": "vscode-langserver-sms",
+  "publisher": "stardog-union",
   "license": "Apache-2.0",
   "displayName": "Stardog Mapping Syntax 2 (SMS) Language Server",
   "description": "Language intelligence (diagnostics, hover tooltips, etc.) for Stardog Mapping Syntax 2 (SMS)",
@@ -34,5 +35,6 @@
     "sms-language-server": "^1.0.0",
     "vscode": "^1.1.26",
     "vscode-languageclient": "^5.2.1"
-  }
+  },
+  "extensionDependencies": ["stardog-union.stardog-rdf-grammars"]
 }

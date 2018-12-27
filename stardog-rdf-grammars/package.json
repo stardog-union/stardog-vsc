@@ -1,14 +1,15 @@
 {
   "name": "stardog-rdf-grammars",
+  "publisher": "stardog-union",
   "displayName": "Stardog RDF Grammars",
   "description": "Syntax highlighting for SPARQL, Turtle, Stardog Rules Syntax, and other RDF languages",
   "version": "0.0.6",
-  "publisher": "stardog-union",
+  "license": "Apache-2.0",
   "engines": {
     "vscode": "^1.5.0"
   },
   "categories": [
-    "Languages"
+    "Programming Languages"
   ],
   "contributes": {
     "languages": [
