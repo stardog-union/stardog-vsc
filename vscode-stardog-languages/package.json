@@ -1,0 +1,20 @@
+{
+  "name": "vscode-stardog-languages",
+  "publisher": "stardog-union",
+  "displayName": "vscode-stardog-languages",
+  "description": "Language intelligence and syntax highlighting for Stardog languages",
+  "license": "Apache-2.0",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.30.0"
+  },
+  "categories": [
+    "Extension Packs"
+  ],
+  "extensionPack": [
+    "stardog-union.stardog-rdf-grammars",
+    "stardog-union.vscode-langserver-sms",
+    "stardog-union.vscode-langserver-sparql",
+    "stardog-union.vscode-langserver-turtle"
+  ]
+}
