@@ -13,3 +13,7 @@ symbols in the case of an error)
 - Open source
 - No arbitrary code execution
 - Powers some of the core language intelligence capabilities of [Stardog Studio](https://www.stardog.com/studio/)
+
+## License
+
+Apache-2.0

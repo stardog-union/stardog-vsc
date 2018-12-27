@@ -1,6 +1,6 @@
 # Stardog RDF Grammars
 
-Visual Studio Code syntax highlighting for all your favorite RDF languages, and a few Stardog-specific ones, too!
+Visual Studio Code syntax highlighting for all your favorite RDF languages, and a few [Stardog](https://www.stardog.com/)-specific ones, too!
 
 ![Turtle syntax highlighting](https://github.com/stardog-union/stardog-vsc/raw/master/stardog-rdf-grammars/static/ttl-syntax.png)
 
