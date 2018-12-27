@@ -1,39 +1,39 @@
 {
-    "name": "vscode-langserver-sparql",
-    "license": "Apache-2.0",
-    "displayName": "SPARQL Language Server (with Stardog extensions)",
-    "description": "Language intelligence (autocomplete, diagnostics, etc.) for SPARQL (W3C + Stardog extensions)",
-    "version": "0.0.1",
-    "engines": {
-        "vscode": "^1.30.0"
-    },
-    "categories": [
-        "Programming Languages",
-        "Linters",
-        "Other"
-    ],
-    "activationEvents": [
-        "onLanguage:sparql",
-        "onLanguage:turtle",
-        "onLanguage:sms"
-    ],
-    "main": "./out/extension",
-    "scripts": {
-        "vscode:prepublish": "yarn run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "yarn run compile && node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "@types/mocha": "^2.2.42",
-        "@types/node": "^8.10.25",
-        "tslint": "^5.8.0",
-        "typescript": "^2.6.1"
-    },
-    "dependencies": {
-        "sparql-language-server": "^1.0.0",
-        "vscode": "^1.1.26",
-        "vscode-languageclient": "^5.2.1"
-    }
+  "name": "vscode-langserver-sparql",
+  "license": "Apache-2.0",
+  "displayName": "SPARQL Language Server (with Stardog extensions)",
+  "description": "Language intelligence (autocomplete, diagnostics, etc.) for SPARQL (W3C + Stardog extensions)",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.30.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:sparql",
+    "onLanguage:turtle",
+    "onLanguage:sms"
+  ],
+  "main": "./out/extension",
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "yarn run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^8.10.25",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1"
+  },
+  "dependencies": {
+    "sparql-language-server": "^1.0.0",
+    "vscode": "^1.1.26",
+    "vscode-languageclient": "^5.2.1"
+  }
 }
