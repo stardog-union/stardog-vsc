@@ -5,6 +5,20 @@
   "description": "Language intelligence and syntax highlighting for Stardog languages",
   "license": "Apache-2.0",
   "version": "0.0.1",
+  "contributors": [
+    {
+      "name": "Jason Rogers",
+      "email": "jason@stardog.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stardog-union/stardog-vsc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stardog-union/stardog-vsc/issues"
+  },
+  "homepage": "https://github.com/stardog-union/stardog-vsc/vscode-stardog-languages/#readme",
   "engines": {
     "vscode": "^1.30.0"
   },

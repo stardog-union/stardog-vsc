@@ -3,8 +3,30 @@
   "publisher": "stardog-union",
   "displayName": "Stardog RDF Grammars",
   "description": "Syntax highlighting for SPARQL, Turtle, Stardog Rules Syntax, and other RDF languages",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "Apache-2.0",
+  "contributors": [
+    {
+      "name": "Adam Bretz",
+      "email": "arbretz@gmail.com"
+    },
+    {
+      "name": "Mark Ellis",
+      "email": "ellismarkf@gmail.com"
+    },
+    {
+      "name": "Jason Rogers",
+      "email": "jason@stardog.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stardog-union/stardog-vsc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stardog-union/stardog-vsc/issues"
+  },
+  "homepage": "https://github.com/stardog-union/stardog-vsc/stardog-rdf-grammars/#readme",
   "engines": {
     "vscode": "^1.5.0"
   },

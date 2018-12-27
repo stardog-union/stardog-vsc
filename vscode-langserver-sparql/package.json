@@ -5,6 +5,20 @@
   "displayName": "SPARQL Language Server (with Stardog extensions)",
   "description": "Language intelligence (autocomplete, diagnostics, etc.) for SPARQL (W3C + Stardog extensions)",
   "version": "0.0.1",
+  "contributors": [
+    {
+      "name": "Jason Rogers",
+      "email": "jason@stardog.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stardog-union/stardog-vsc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stardog-union/stardog-vsc/issues"
+  },
+  "homepage": "https://github.com/stardog-union/stardog-vsc/vscode-langserver-sparql/#readme",
   "engines": {
     "vscode": "^1.30.0"
   },
