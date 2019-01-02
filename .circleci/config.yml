@@ -1,8 +1,10 @@
 version: 2
+references:
+  working_directory: ~/stardog-vsc
 jobs:
   build:
     docker:
-      - image: circleci/node:8.9-stretch
+      - image: circleci/node:8.9-stretch-browsers
     steps:
       - checkout
       - restore_cache:
@@ -15,9 +17,9 @@ jobs:
       - run:
           name: Install Node Modules
           command: |
-            pushd ./vscode-langserver-sms && yarn && popd
-            pushd ./vscode-langserver-sparql && yarn && popd
-            pushd ./vscode-langserver-turtle && yarn && popd
+            cd ~/stardog-vsc/vscode-langserver-sms && yarn
+            cd ~/stardog-vsc/vscode-langserver-sparql && yarn
+            cd ~/stardog-vsc/vscode-langserver-turtle && yarn
       - save_cache:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "./vscode-langserver-sms/yarn.lock" }}-{{ checksum "./vscode-langserver-sparql/yarn.lock" }}-{{ checksum "./vscode-langserver-turtle/yarn.lock" }}
           paths:
@@ -31,21 +33,16 @@ jobs:
 
   test:
     docker:
-      - image: circleci/node:8.9-stretch
+      - image: circleci/node:8.9-stretch-browsers
     steps:
       - attach_workspace:
           at: .
       - run:
-          name: Install OS-level Test Dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y libgtk-3-0 libxss1 libxtst6 libgconf-2-4 libnss3 libasound2 --no-install-recommends
-      - run:
           name: Tests
           command: |
-            pushd ./vscode-langserver-sms && yarn test && popd
-            pushd ./vscode-langserver-sparql && yarn test && popd
-            pushd ./vscode-langserver-turtle && yarn test && popd
+            cd ~/stardog-vsc/vscode-langserver-sms && yarn run test
+            cd ~/stardog-vsc/vscode-langserver-sparql && yarn run test
+            cd ~/stardog-vsc/vscode-langserver-turtle && yarn run test
   
 workflows:
   version: 2
