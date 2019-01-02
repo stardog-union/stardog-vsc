@@ -39,7 +39,7 @@ jobs:
           name: Install OS-level Test Dependencies
           command: |
             sudo apt-get update
-            sudo apt-get install -y libgtk-3-0 libxss1 libxtst6 --no-install-recommends
+            sudo apt-get install -y libgtk-3-0 libxss1 libxtst6 libgconf-2-4 libnss3 libasound2 --no-install-recommends
       - run:
           name: Tests
           command: |
