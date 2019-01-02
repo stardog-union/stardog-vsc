@@ -28,9 +28,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:sparql",
-    "onLanguage:turtle",
-    "onLanguage:sms"
+    "onLanguage:sparql"
   ],
   "main": "./out/extension",
   "scripts": {
