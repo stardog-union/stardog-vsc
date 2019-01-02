@@ -5,6 +5,11 @@ jobs:
       - image: circleci/node:8.9-stretch
     steps:
       - checkout
+      - run:
+          name: Install OS-level Dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y libgtk-3 --no-install-recommends
       - restore_cache:
           # This caching strategy isn't ideal, but CircleCI's current support for monorepos is poor, and this works well enough
           keys:
