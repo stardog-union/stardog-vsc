@@ -58,7 +58,7 @@ jobs:
     working_directory: *sparql_directory
 
   test_turtle:
-    <<: *test_turtle
+    <<: *test_common
     working_directory: *turtle_directory
 
 workflows:
