@@ -1,0 +1,79 @@
+version: 2
+references:
+  sms_directory: &sms_directory ~/stardog-vsc/vscode-langserver-sms
+  sparql_directory: &sparql_directory ~/stardog-vsc/vscode-langserver-sparql
+  turtle_directory: &turtle_directory ~/stardog-vsc/vscode-langserver-turtle
+jobs:
+  build_common: &build_common
+    docker:
+      - image: circleci/node:8.9-stretch
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          # This branch if available
+          - dependency-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          # Default branch if not
+          - dependency-cache-develop-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Node Modules
+          command: yarn
+      - save_cache:
+          key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+          - ./node_modules
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./
+
+  build_sms:
+    <<: *build_common
+    working_directory: *sms_directory
+  
+  build_sparql:
+    <<: *build_common
+    working_directory: *sparql_directory
+
+  build_turtle:
+    <<: *build_common
+    working_directory: *turtle_directory
+
+  test_common: &test_common
+    docker:
+      - image: circleci/node:8.9-stretch
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Tests
+          command: yarn test
+  
+  test_sms:
+    <<: *test_common
+    working_directory: *sms_directory
+  
+  test_sparql:
+    <<: *test_common
+    working_directory: *sparql_directory
+
+  test_turtle:
+    <<: *test_turtle
+    working_directory: *turtle_directory
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build_sms
+      - test_sms:
+          requires:
+            - build_sms
+      - build_sparql
+      - test_sparql:
+          requires:
+            - build_sparql
+      - build_turtle
+      - test_turtle:
+          requires:
+            - build_turtle
