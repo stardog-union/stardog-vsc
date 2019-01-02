@@ -9,7 +9,7 @@ jobs:
           name: Install OS-level Dependencies
           command: |
             sudo apt-get update
-            sudo apt-get install -y libgtk-3-0 --no-install-recommends
+            sudo apt-get install -y libgtk-3-0 libgtk-3-dev --no-install-recommends
       - restore_cache:
           # This caching strategy isn't ideal, but CircleCI's current support for monorepos is poor, and this works well enough
           keys:
