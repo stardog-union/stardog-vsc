@@ -1,45 +1,35 @@
 version: 2
-references:
-  sms_directory: &sms_directory ~/stardog-vsc/vscode-langserver-sms
-  sparql_directory: &sparql_directory ~/stardog-vsc/vscode-langserver-sparql
-  turtle_directory: &turtle_directory ~/stardog-vsc/vscode-langserver-turtle
 jobs:
-  build_common: &build_common
+  build:
     docker:
       - image: circleci/node:8.9-stretch
     steps:
       - checkout
       - restore_cache:
+          # This caching strategy isn't ideal, but CircleCI's current support for monorepos is poor, and this works well enough
           keys:
           # This branch if available
-          - dependency-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          - dependency-cache-{{ .Branch }}-{{ checksum "./vscode-langserver-sms/yarn.lock" }}-{{ checksum "./vscode-langserver-sparql/yarn.lock" }}-{{ checksum "./vscode-langserver-turtle/yarn.lock" }}
           # Default branch if not
-          - dependency-cache-develop-{{ checksum "yarn.lock" }}
+          - dependency-cache-develop-{{ checksum "./vscode-langserver-sms/yarn.lock" }}-{{ checksum "./vscode-langserver-sparql/yarn.lock" }}-{{ checksum "./vscode-langserver-turtle/yarn.lock" }}
       - run:
           name: Install Node Modules
-          command: yarn
+          command: |
+            pushd ./vscode-langserver-sms && yarn && popd
+            pushd ./vscode-langserver-sparql && yarn && popd
+            pushd ./vscode-langserver-turtle && yarn && popd
       - save_cache:
-          key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "./vscode-langserver-sms/yarn.lock" }}-{{ checksum "./vscode-langserver-sparql/yarn.lock" }}-{{ checksum "./vscode-langserver-turtle/yarn.lock" }}
           paths:
-          - ./node_modules
+          - ./vscode-langserver-sms/node_modules
+          - ./vscode-langserver-sparql/node_modules
+          - ./vscode-langserver-turtle/node_modules
       - persist_to_workspace:
           root: .
           paths:
             - ./
 
-  build_sms:
-    <<: *build_common
-    working_directory: *sms_directory
-  
-  build_sparql:
-    <<: *build_common
-    working_directory: *sparql_directory
-
-  build_turtle:
-    <<: *build_common
-    working_directory: *turtle_directory
-
-  test_common: &test_common
+  test:
     docker:
       - image: circleci/node:8.9-stretch
     steps:
@@ -47,33 +37,16 @@ jobs:
           at: .
       - run:
           name: Tests
-          command: yarn test
+          command: |
+            pushd ./vscode-langserver-sms && yarn test && popd
+            pushd ./vscode-langserver-sparql && yarn test && popd
+            pushd ./vscode-langserver-turtle && yarn test && popd
   
-  test_sms:
-    <<: *test_common
-    working_directory: *sms_directory
-  
-  test_sparql:
-    <<: *test_common
-    working_directory: *sparql_directory
-
-  test_turtle:
-    <<: *test_common
-    working_directory: *turtle_directory
-
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build_sms
-      - test_sms:
+      - build
+      - test:
           requires:
-            - build_sms
-      - build_sparql
-      - test_sparql:
-          requires:
-            - build_sparql
-      - build_turtle
-      - test_turtle:
-          requires:
-            - build_turtle
+            - build
