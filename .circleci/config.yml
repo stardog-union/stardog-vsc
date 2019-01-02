@@ -1,10 +1,11 @@
 version: 2
 references:
-  working_directory: ~/stardog-vsc
+  working_directory: &working_directory ~/stardog-vsc
 jobs:
   build:
     docker:
       - image: circleci/node:8.9-stretch-browsers
+    working_directory: *working_directory
     steps:
       - checkout
       - restore_cache:
@@ -34,6 +35,7 @@ jobs:
   test:
     docker:
       - image: circleci/node:8.9-stretch-browsers
+    working_directory: *working_directory
     steps:
       - attach_workspace:
           at: .
