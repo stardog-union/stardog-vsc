@@ -41,6 +41,7 @@
   "devDependencies": {
     "@types/mocha": "^2.2.42",
     "@types/node": "^8.10.25",
+    "chai": "^4.2.0",
     "tslint": "^5.8.0",
     "typescript": "^2.6.1"
   },
@@ -49,5 +50,7 @@
     "vscode": "^1.1.26",
     "vscode-languageclient": "^5.2.1"
   },
-  "extensionDependencies": ["stardog-union.stardog-rdf-grammars"]
+  "extensionDependencies": [
+    "stardog-union.stardog-rdf-grammars"
+  ]
 }
