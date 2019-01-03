@@ -13,9 +13,7 @@ let client: LanguageClient;
 export function activate(context: vscode.ExtensionContext) {
   const server = context.asAbsolutePath(
     path.join(
-      "..",
-      "stardog-language-servers",
-      "packages",
+      "node_modules",
       "sms-language-server",
       "dist",
       "cli.js"

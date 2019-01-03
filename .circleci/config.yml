@@ -1,15 +1,13 @@
 version: 2
+references:
+  working_directory: &working_directory ~/stardog-vsc
 jobs:
   build:
     docker:
-      - image: circleci/node:8.9-stretch
+      - image: circleci/node:8.9-stretch-browsers
+    working_directory: *working_directory
     steps:
       - checkout
-      - run:
-          name: Install OS-level Dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y libgtk-3-0 --no-install-recommends
       - restore_cache:
           # This caching strategy isn't ideal, but CircleCI's current support for monorepos is poor, and this works well enough
           keys:
@@ -20,9 +18,9 @@ jobs:
       - run:
           name: Install Node Modules
           command: |
-            pushd ./vscode-langserver-sms && yarn && popd
-            pushd ./vscode-langserver-sparql && yarn && popd
-            pushd ./vscode-langserver-turtle && yarn && popd
+            cd ~/stardog-vsc/vscode-langserver-sms && yarn
+            cd ~/stardog-vsc/vscode-langserver-sparql && yarn
+            cd ~/stardog-vsc/vscode-langserver-turtle && yarn
       - save_cache:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "./vscode-langserver-sms/yarn.lock" }}-{{ checksum "./vscode-langserver-sparql/yarn.lock" }}-{{ checksum "./vscode-langserver-turtle/yarn.lock" }}
           paths:
@@ -36,16 +34,18 @@ jobs:
 
   test:
     docker:
-      - image: circleci/node:8.9-stretch
+      - image: circleci/node:8.9-stretch-browsers
+    working_directory: *working_directory
     steps:
       - attach_workspace:
           at: .
       - run:
           name: Tests
           command: |
-            pushd ./vscode-langserver-sms && yarn test && popd
-            pushd ./vscode-langserver-sparql && yarn test && popd
-            pushd ./vscode-langserver-turtle && yarn test && popd
+            cp -R ~/stardog-vsc/stardog-rdf-grammars ~/stardog-vsc/stardog-union.stardog-rdf-grammars
+            cd ~/stardog-vsc/vscode-langserver-sms && yarn run test
+            cd ~/stardog-vsc/vscode-langserver-sparql && yarn run test
+            cd ~/stardog-vsc/vscode-langserver-turtle && yarn run test
   
 workflows:
   version: 2

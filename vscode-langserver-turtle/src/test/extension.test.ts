@@ -1,22 +1,76 @@
-//
-// Note: This example test is leveraging the Mocha test framework.
-// Please refer to their documentation on https://mochajs.org/ for help.
-//
+import { expect } from "chai";
+import * as path from "path";
+import * as vscode from "vscode";
 
-// The module 'assert' provides assertion methods from node
-import * as assert from 'assert';
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
-// import * as vscode from 'vscode';
-// import * as myExtension from '../extension';
+describe("Turtle Language Server Extension", () => {
+  let docUri: vscode.Uri;
+  let document: vscode.TextDocument | null;
 
-// Defines a Mocha test suite to group tests of similar kind together
-suite("Extension Tests", function () {
+  beforeEach(async () => {
+    const ext = vscode.extensions.getExtension("stardog-union.vscode-langserver-turtle")!;
+    await ext.activate();
+    docUri = vscode.Uri.file(
+      path.join(__dirname, "..", "..", "fixtures", "bad", "basic-bad-turtle.ttl")
+    );
+    document = await vscode.workspace.openTextDocument(docUri);
+    await vscode.window.showTextDocument(document);
+    await sleep(2000); // let server start
+  });
 
-    // Defines a Mocha unit test
-    test("Something 1", function() {
-        assert.equal(-1, [1, 2, 3].indexOf(5));
-        assert.equal(-1, [1, 2, 3].indexOf(0));
-    });
+  afterEach(() => {
+    document = null;
+  });
+
+  it("receives error diagnostics from the server", () => {
+    const receivedDiagnostics = vscode.languages.getDiagnostics(docUri);
+    const normalizedReceivedDiagnostics = JSON.parse(JSON.stringify(receivedDiagnostics));
+    expect(normalizedReceivedDiagnostics).to.eql([
+      {
+        severity: "Error",
+        message: "PNAME_NS expected.",
+        range: [
+          {
+            line: 0,
+            character: 7
+          },
+          {
+            line: 0,
+            character: 7
+          }
+        ],
+        source: "prefixID"
+      }
+    ]);
+  });
+
+  it("receives hover help from the server", async () => {
+    const hoverHelp = (await vscode.commands.executeCommand(
+      "vscode.executeHoverProvider",
+      docUri,
+      new vscode.Position(0, 0)
+    )) as vscode.Hover;
+    const normalizedHoverHelp = JSON.parse(JSON.stringify(hoverHelp));
+    expect(normalizedHoverHelp).to.eql([
+      {
+        contents: [
+          {
+            sanitize: true,
+            value: "```\nprefixID\n```"
+          }
+        ],
+        range: [
+          {
+            line: 0,
+            character: 0
+          },
+          {
+            line: 0,
+            character: 7
+          }
+        ]
+      }
+    ]);
+  });
 });
