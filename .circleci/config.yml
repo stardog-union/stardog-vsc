@@ -42,6 +42,7 @@ jobs:
       - run:
           name: Tests
           command: |
+            cp -R ~/stardog-vsc/stardog-rdf-grammars ~/stardog-vsc/stardog-union.stardog-rdf-grammars
             cd ~/stardog-vsc/vscode-langserver-sms && yarn run test
             cd ~/stardog-vsc/vscode-langserver-sparql && yarn run test
             cd ~/stardog-vsc/vscode-langserver-turtle && yarn run test
