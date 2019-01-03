@@ -1,22 +1,121 @@
-//
-// Note: This example test is leveraging the Mocha test framework.
-// Please refer to their documentation on https://mochajs.org/ for help.
-//
+import { expect } from "chai";
+import * as path from "path";
+import * as vscode from "vscode";
 
-// The module 'assert' provides assertion methods from node
-import * as assert from 'assert';
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
-// import * as vscode from 'vscode';
-// import * as myExtension from '../extension';
+describe("SPARQL Language Server Extension", () => {
+  let docUri: vscode.Uri;
+  let document: vscode.TextDocument | null;
 
-// Defines a Mocha test suite to group tests of similar kind together
-suite("Extension Tests", function () {
+  beforeEach(async () => {
+    const ext = vscode.extensions.getExtension("stardog-union.vscode-langserver-sparql")!;
+    await ext.activate();
+    docUri = vscode.Uri.file(
+      path.join(__dirname, "..", "..", "fixtures", "bad", "basic-bad-select.sparql")
+    );
+    document = await vscode.workspace.openTextDocument(docUri);
+    await vscode.window.showTextDocument(document);
+    await sleep(2000); // let server start
+  });
 
-    // Defines a Mocha unit test
-    test("Something 1", function() {
-        assert.equal(-1, [1, 2, 3].indexOf(5));
-        assert.equal(-1, [1, 2, 3].indexOf(0));
+  afterEach(() => {
+    document = null;
+  });
+
+  it("receives error diagnostics from the server", () => {
+    const receivedDiagnostics = vscode.languages.getDiagnostics(docUri);
+    const normalizedReceivedDiagnostics = JSON.parse(JSON.stringify(receivedDiagnostics));
+    expect(normalizedReceivedDiagnostics).to.eql([
+      {
+        severity: "Error",
+        message: "'{' expected.",
+        range: [
+          {
+            line: 2,
+            character: 19
+          },
+          {
+            line: 2,
+            character: 23
+          }
+        ],
+        source: "GroupGraphPattern"
+      },
+      {
+        message:
+          "\tExpected one of the following:\n '^'\n IRIREF e.g. <http://example.com>\n PNAME_LN\n PNAME_NS\n 'a'\n '!'\n '('\n VAR1 e.g. ?foo\n VAR2 e.g. ?bar",
+        range: [
+          {
+            character: 5,
+            line: 3
+          },
+          {
+            character: 6,
+            line: 3
+          }
+        ],
+        severity: "Error",
+        source: "PropertyListPathNotEmpty"
+      }
+    ]);
+  });
+
+  it("receives hover help from the server", async () => {
+    const hoverHelp = (await vscode.commands.executeCommand(
+      "vscode.executeHoverProvider",
+      docUri,
+      new vscode.Position(0, 0)
+    )) as vscode.Hover;
+    const normalizedHoverHelp = JSON.parse(JSON.stringify(hoverHelp));
+    expect(normalizedHoverHelp).to.eql([
+      {
+        contents: [
+          {
+            sanitize: true,
+            value: "```\nPrefixDecl\n```"
+          }
+        ],
+        range: [
+          {
+            line: 0,
+            character: 0
+          },
+          {
+            line: 0,
+            character: 52
+          }
+        ]
+      }
+    ]);
+  });
+
+  // Note that this test and the one above also test error-tolerance, since
+  // the language assistance comes after a parse error.
+  it("receives completion suggestions from the server", async () => {
+    const completions = (await vscode.commands.executeCommand(
+      "vscode.executeCompletionItemProvider",
+      docUri,
+      new vscode.Position(3, 5)
+    )) as vscode.CompletionList;
+    const normalizedSuggestedCompletion = JSON.parse(JSON.stringify(completions.items[0]));
+    expect(normalizedSuggestedCompletion).to.eql({
+      label: "<http://www.fakezz.com/fakePrefix>",
+      kind: "EnumMember",
+      insertText: "<http://www.fakezz.com/fakePrefix>",
+      textEdit: {
+        range: [
+          {
+            line: 3,
+            character: 5
+          },
+          {
+            line: 3,
+            character: 6
+          }
+        ],
+        newText: "<http://www.fakezz.com/fakePrefix>"
+      }
     });
+  });
 });

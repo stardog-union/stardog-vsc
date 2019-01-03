@@ -1,0 +1,5 @@
+PREFIX fakePrefix:<http://www.fakezz.com/fakePrefix>
+
+select distinct ?s wher {
+  ?s <
+}
