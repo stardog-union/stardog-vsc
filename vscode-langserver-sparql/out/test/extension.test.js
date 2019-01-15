@@ -86,30 +86,29 @@ describe("SPARQL Language Server Extension", () => {
             }
         ]);
     }));
+    // Note that this test and the one above also test error-tolerance, since
+    // the language assistance comes after a parse error.
     it("receives completion suggestions from the server", () => __awaiter(this, void 0, void 0, function* () {
         const completions = (yield vscode.commands.executeCommand("vscode.executeCompletionItemProvider", docUri, new vscode.Position(3, 5)));
-        const normalizedCompletions = JSON.parse(JSON.stringify(completions));
-        console.log(JSON.stringify(normalizedCompletions, null, 2));
-        chai_1.expect(normalizedCompletions).to.eql([
-            {
-                contents: [
-                    {
-                        sanitize: true,
-                        value: "```\nSelectClause\n```"
-                    }
-                ],
+        const normalizedSuggestedCompletion = JSON.parse(JSON.stringify(completions.items[0]));
+        chai_1.expect(normalizedSuggestedCompletion).to.eql({
+            label: "<http://www.fakezz.com/fakePrefix>",
+            kind: "EnumMember",
+            insertText: "<http://www.fakezz.com/fakePrefix>",
+            textEdit: {
                 range: [
                     {
-                        line: 0,
-                        character: 0
+                        line: 3,
+                        character: 5
                     },
                     {
-                        line: 0,
-                        character: 18
+                        line: 3,
+                        character: 6
                     }
-                ]
+                ],
+                newText: "<http://www.fakezz.com/fakePrefix>"
             }
-        ]);
+        });
     }));
 });
 //# sourceMappingURL=extension.test.js.map
