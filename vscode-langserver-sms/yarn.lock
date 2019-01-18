@@ -1287,14 +1287,14 @@ semver@^5.3.0, semver@^5.4.1, semver@^5.5.0:
   resolved "https://registry.npmjs.org/semver/-/semver-5.6.0.tgz#7e74256fbaa49c75aa7c7a205cc22799cac80004"
   integrity sha512-RS9R6R35NYgQn++fkDWaOmqGoj4Ek9gGs+DPxNUZKuwE183xjJroKvyo1IzVFeXvUrvmALy6FWD5xrdJT25gMg==
 
-sms-language-server@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/sms-language-server/-/sms-language-server-1.0.0.tgz#2feaa9acfd81e94b5259242f30aa61b3d7122948"
-  integrity sha512-vfDQTbwRLuAKlP2hjEnMnFr4MQOfM51epZD1UCl7A8KSpyIjZm4oxOBqYH8MFLxzW/nob969XpeNiCFNGjzS3g==
+sms-language-server@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/sms-language-server/-/sms-language-server-2.0.0.tgz#f8f8100de30d9333c6e25bfbd78ece0e69e111e7"
+  integrity sha512-wqki/v7NPG+tfwKf1trvKl6QxyVg0VfKf6SH3hVRoMuQNZ73twi4LLQFqCGGW4ULpQTcbHAvzSkKdx5c1EDTwg==
   dependencies:
     class-autobind-decorator "^3.0.1"
     millan "^2.0.0"
-    stardog-language-utils "^1.0.0"
+    stardog-language-utils "^1.1.1"
     vscode-languageserver "^5.2.1"
 
 source-map-support@^0.5.0:
@@ -1344,10 +1344,10 @@ sshpk@^1.7.0:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
-stardog-language-utils@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/stardog-language-utils/-/stardog-language-utils-1.0.0.tgz#674d7fd5812d8e3ea4c19012017bfae811eb1ed1"
-  integrity sha512-v87/JVrpQBUj3vvIt91252tdUu4X98dC4BSAXYfjiXmZUFiR/mJ1flhc85MplZ8rCTqjAvaRXdv50/2i//H3Uw==
+stardog-language-utils@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/stardog-language-utils/-/stardog-language-utils-1.1.1.tgz#3ae8c87d230b1edd30050ef15557bdb4ac36e6b5"
+  integrity sha512-gM10PAjHthATvyNwM8Geg59i5F9KeCQHtrcTRACSfPSgzEgAzn4/0ebjNpNt0RBjIVTXK7lfIsGduPMIvsH4Qg==
   dependencies:
     lodash.uniq "^4.5.0"
     millan "^2.0.0"

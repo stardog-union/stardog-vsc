@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "displayName": "SPARQL Language Server (with Stardog extensions)",
   "description": "Language intelligence (autocomplete, diagnostics, etc.) for SPARQL (W3C + Stardog extensions)",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "contributors": [
     {
       "name": "Jason Rogers",
@@ -47,7 +47,7 @@
     "typescript": "^2.6.1"
   },
   "dependencies": {
-    "sparql-language-server": "^1.0.0",
+    "sparql-language-server": "^2.0.0",
     "vscode": "^1.1.26",
     "vscode-languageclient": "^5.2.1"
   },

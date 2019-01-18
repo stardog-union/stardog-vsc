@@ -1334,10 +1334,10 @@ sshpk@^1.7.0:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
-stardog-language-utils@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/stardog-language-utils/-/stardog-language-utils-1.0.0.tgz#674d7fd5812d8e3ea4c19012017bfae811eb1ed1"
-  integrity sha512-v87/JVrpQBUj3vvIt91252tdUu4X98dC4BSAXYfjiXmZUFiR/mJ1flhc85MplZ8rCTqjAvaRXdv50/2i//H3Uw==
+stardog-language-utils@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/stardog-language-utils/-/stardog-language-utils-1.1.1.tgz#3ae8c87d230b1edd30050ef15557bdb4ac36e6b5"
+  integrity sha512-gM10PAjHthATvyNwM8Geg59i5F9KeCQHtrcTRACSfPSgzEgAzn4/0ebjNpNt0RBjIVTXK7lfIsGduPMIvsH4Qg==
   dependencies:
     lodash.uniq "^4.5.0"
     millan "^2.0.0"
@@ -1516,14 +1516,14 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-turtle-language-server@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/turtle-language-server/-/turtle-language-server-1.0.0.tgz#738da3e7de946494be99c1c2c70ec58dfa9f4ecb"
-  integrity sha512-K8hVmfU3+zDPACk5ZdLfrbOWs6K0/vXfk+9eRSXER3i0k40IERU2K6vrrQQamb7TzCnUfnp1rBeddgnSON83SA==
+turtle-language-server@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/turtle-language-server/-/turtle-language-server-2.0.0.tgz#f6029988aeade0359212dcfd10e862848844aaa0"
+  integrity sha512-GdXvtXKw9NhMgb7amWle54Cb+MANLlepm9f6I9BxMoRRx1gTP1R5U1iHbwwiiqlHUzPyaexb3UFdRIps+tKWog==
   dependencies:
     class-autobind-decorator "^3.0.1"
     millan "^2.0.0"
-    stardog-language-utils "^1.0.0"
+    stardog-language-utils "^1.1.1"
     vscode-languageserver "^5.2.1"
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:

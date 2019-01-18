@@ -48,9 +48,28 @@ describe("SMS Language Server Extension", () => {
         ]);
     });
     it("receives hover help from the server", () => __awaiter(this, void 0, void 0, function* () {
-        const hoverHelp = (yield vscode.commands.executeCommand('vscode.executeHoverProvider', docUri, new vscode.Position(0, 0)));
-        console.log(JSON.stringify(hoverHelp, null, 2));
-        return chai_1.expect(true).to.be.true;
+        const hoverHelp = (yield vscode.commands.executeCommand("vscode.executeHoverProvider", docUri, new vscode.Position(0, 0)));
+        const normalizedHoverHelp = JSON.parse(JSON.stringify(hoverHelp));
+        chai_1.expect(normalizedHoverHelp).to.eql([
+            {
+                contents: [
+                    {
+                        sanitize: true,
+                        value: "```\nMappingDecl\n```"
+                    }
+                ],
+                range: [
+                    {
+                        line: 0,
+                        character: 0
+                    },
+                    {
+                        line: 0,
+                        character: 7
+                    }
+                ]
+            }
+        ]);
     }));
 });
 //# sourceMappingURL=extension.test.js.map
