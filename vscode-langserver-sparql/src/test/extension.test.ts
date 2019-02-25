@@ -68,24 +68,15 @@ describe("SPARQL Language Server Extension", () => {
       new vscode.Position(0, 0)
     )) as vscode.Hover;
     const normalizedHoverHelp = JSON.parse(JSON.stringify(hoverHelp));
-    expect(normalizedHoverHelp).to.eql([
+    expect(normalizedHoverHelp[0].contents[0].value).to.eql("```\nPrefixDecl\n```");
+    expect(normalizedHoverHelp[0].range).to.eql([
       {
-        contents: [
-          {
-            sanitize: true,
-            value: "```\nPrefixDecl\n```"
-          }
-        ],
-        range: [
-          {
-            line: 0,
-            character: 0
-          },
-          {
-            line: 0,
-            character: 52
-          }
-        ]
+        line: 0,
+        character: 0
+      },
+      {
+        line: 0,
+        character: 52
       }
     ]);
   });
