@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "displayName": "Turtle Language Server",
   "description": "Language intelligence (diagnostics, hover tooltips, etc.) for Turtle",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "contributors": [
     {
       "name": "Jason Rogers",
@@ -48,7 +48,7 @@
     "typescript": "^2.6.1"
   },
   "dependencies": {
-    "turtle-language-server": "^2.0.0",
+    "srs-language-server": "^1.0.3",
     "vscode": "^1.1.26",
     "vscode-languageclient": "^5.2.1"
   },

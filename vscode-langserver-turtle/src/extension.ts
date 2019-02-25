@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
   const server = context.asAbsolutePath(
     path.join(
       "node_modules",
-      "turtle-language-server",
+      "srs-language-server",
       "dist",
       "cli.js"
     )

@@ -928,6 +928,11 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
+lodash.uniqby@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.npmjs.org/lodash.uniqby/-/lodash.uniqby-4.7.0.tgz#d99c07a669e9e6d24e1362dfe266c67616af1302"
+  integrity sha1-2ZwHpmnp5tJOE2Lf4mbGdhavEwI=
+
 map-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.npmjs.org/map-stream/-/map-stream-0.0.7.tgz#8a1f07896d82b10926bd3744a2420009f88974a8"
@@ -938,12 +943,13 @@ map-stream@~0.1.0:
   resolved "http://registry.npmjs.org/map-stream/-/map-stream-0.1.0.tgz#e56aa94c4c8055a16404a0674b78f215f7c8e194"
   integrity sha1-5WqpTEyAVaFkBKBnS3jyFffI4ZQ=
 
-millan@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/millan/-/millan-2.0.0.tgz#71829a50095a42cc94e8f7f7cc4f5ad8367b91b3"
-  integrity sha512-Z7rSUle5ijxeIu1thLfPja8N8Zk4x2MWbqziFf92EDlt1ijZd/zT8avxKH2q0mLxLjcicGZLRZDyTXZYgtmbWQ==
+millan@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/millan/-/millan-2.1.1.tgz#797e3c8e3b2a54a60ce8ccd40068e226b647cb73"
+  integrity sha512-BGA9WRVnEVBTNSLGGQecM7cFsaM5BfESh7gn5hnpMHQuB2V+T/ZsgEynNkMNEHeMsYaSWT++jiNWqi7XtBiEJg==
   dependencies:
     chevrotain "3.0.1"
+    lodash.uniqby "^4.7.0"
 
 mime-db@~1.37.0:
   version "1.37.0"
@@ -1287,14 +1293,14 @@ semver@^5.3.0, semver@^5.4.1, semver@^5.5.0:
   resolved "https://registry.npmjs.org/semver/-/semver-5.6.0.tgz#7e74256fbaa49c75aa7c7a205cc22799cac80004"
   integrity sha512-RS9R6R35NYgQn++fkDWaOmqGoj4Ek9gGs+DPxNUZKuwE183xjJroKvyo1IzVFeXvUrvmALy6FWD5xrdJT25gMg==
 
-sms-language-server@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/sms-language-server/-/sms-language-server-2.0.0.tgz#f8f8100de30d9333c6e25bfbd78ece0e69e111e7"
-  integrity sha512-wqki/v7NPG+tfwKf1trvKl6QxyVg0VfKf6SH3hVRoMuQNZ73twi4LLQFqCGGW4ULpQTcbHAvzSkKdx5c1EDTwg==
+sms-language-server@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.npmjs.org/sms-language-server/-/sms-language-server-2.0.3.tgz#2b47855f93a72d935f4542f06a26678820cce1ca"
+  integrity sha512-CguTZv/Gmj6OujmrMo3uxSa+u/OlUQAJ5lFj7X5eRNhlpIzc+CKSAU6JFJL5Vo2pJWs80d6IPtMi8DJly6uzDA==
   dependencies:
     class-autobind-decorator "^3.0.1"
-    millan "^2.0.0"
-    stardog-language-utils "^1.1.1"
+    millan "^2.1.1"
+    stardog-language-utils "^1.1.5"
     vscode-languageserver "^5.2.1"
 
 source-map-support@^0.5.0:
@@ -1344,13 +1350,14 @@ sshpk@^1.7.0:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
-stardog-language-utils@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/stardog-language-utils/-/stardog-language-utils-1.1.1.tgz#3ae8c87d230b1edd30050ef15557bdb4ac36e6b5"
-  integrity sha512-gM10PAjHthATvyNwM8Geg59i5F9KeCQHtrcTRACSfPSgzEgAzn4/0ebjNpNt0RBjIVTXK7lfIsGduPMIvsH4Qg==
+stardog-language-utils@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.npmjs.org/stardog-language-utils/-/stardog-language-utils-1.1.5.tgz#ebb50c8faeac728936325d5867940d34e394b6d2"
+  integrity sha512-sYqol27aqKb95Zg3xZaqcYrgT0sv1c+QkMpzHwyPBpC+kx7gFyNCrb5v23cqantjMXBTxicJiAPdYsr1xuurvQ==
   dependencies:
+    escape-string-regexp "^1.0.5"
     lodash.uniq "^4.5.0"
-    millan "^2.0.0"
+    millan "^2.1.1"
     vscode-languageserver "^5.2.1"
 
 stat-mode@^0.2.0:

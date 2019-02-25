@@ -259,7 +259,7 @@ check-error@^1.0.2:
 
 chevrotain@3.0.1:
   version "3.0.1"
-  resolved "http://registry.npmjs.org/chevrotain/-/chevrotain-3.0.1.tgz#4259e8ea707273e88b8d70c9f1e3fe108d9c2446"
+  resolved "https://registry.npmjs.org/chevrotain/-/chevrotain-3.0.1.tgz#4259e8ea707273e88b8d70c9f1e3fe108d9c2446"
   integrity sha512-k/CquXcTzlMr2XTmO/SXM57L3MlOWQz4eBCeB7Uh6lVuof2ofEuZsDlmPh9Sey9gVyZB+9kt4knpd9LgRPn3Eg==
 
 class-autobind-decorator@^3.0.1:
@@ -928,6 +928,11 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
+lodash.uniqby@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.npmjs.org/lodash.uniqby/-/lodash.uniqby-4.7.0.tgz#d99c07a669e9e6d24e1362dfe266c67616af1302"
+  integrity sha1-2ZwHpmnp5tJOE2Lf4mbGdhavEwI=
+
 map-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.npmjs.org/map-stream/-/map-stream-0.0.7.tgz#8a1f07896d82b10926bd3744a2420009f88974a8"
@@ -938,12 +943,13 @@ map-stream@~0.1.0:
   resolved "http://registry.npmjs.org/map-stream/-/map-stream-0.1.0.tgz#e56aa94c4c8055a16404a0674b78f215f7c8e194"
   integrity sha1-5WqpTEyAVaFkBKBnS3jyFffI4ZQ=
 
-millan@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/millan/-/millan-2.0.0.tgz#71829a50095a42cc94e8f7f7cc4f5ad8367b91b3"
-  integrity sha512-Z7rSUle5ijxeIu1thLfPja8N8Zk4x2MWbqziFf92EDlt1ijZd/zT8avxKH2q0mLxLjcicGZLRZDyTXZYgtmbWQ==
+millan@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/millan/-/millan-2.1.1.tgz#797e3c8e3b2a54a60ce8ccd40068e226b647cb73"
+  integrity sha512-BGA9WRVnEVBTNSLGGQecM7cFsaM5BfESh7gn5hnpMHQuB2V+T/ZsgEynNkMNEHeMsYaSWT++jiNWqi7XtBiEJg==
   dependencies:
     chevrotain "3.0.1"
+    lodash.uniqby "^4.7.0"
 
 mime-db@~1.37.0:
   version "1.37.0"
@@ -1319,6 +1325,16 @@ sprintf-js@~1.0.2:
   resolved "http://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
 
+srs-language-server@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/srs-language-server/-/srs-language-server-1.0.3.tgz#2f38aa9c1c01e7e00328874c47f5b1453f3d9b23"
+  integrity sha512-fAeYhas0bP7XKIqh+/UKH45XHQ6r+SjwrC2NZGe0QOHi7VRK4ewUNjWBQsORo2cVWzoKiVy7lnRnkRiZL37P/g==
+  dependencies:
+    class-autobind-decorator "^3.0.1"
+    millan "^2.1.1"
+    stardog-language-utils "^1.1.5"
+    vscode-languageserver "^5.2.1"
+
 sshpk@^1.7.0:
   version "1.16.0"
   resolved "https://registry.npmjs.org/sshpk/-/sshpk-1.16.0.tgz#1d4963a2fbffe58050aa9084ca20be81741c07de"
@@ -1334,13 +1350,14 @@ sshpk@^1.7.0:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
-stardog-language-utils@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/stardog-language-utils/-/stardog-language-utils-1.1.1.tgz#3ae8c87d230b1edd30050ef15557bdb4ac36e6b5"
-  integrity sha512-gM10PAjHthATvyNwM8Geg59i5F9KeCQHtrcTRACSfPSgzEgAzn4/0ebjNpNt0RBjIVTXK7lfIsGduPMIvsH4Qg==
+stardog-language-utils@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.npmjs.org/stardog-language-utils/-/stardog-language-utils-1.1.5.tgz#ebb50c8faeac728936325d5867940d34e394b6d2"
+  integrity sha512-sYqol27aqKb95Zg3xZaqcYrgT0sv1c+QkMpzHwyPBpC+kx7gFyNCrb5v23cqantjMXBTxicJiAPdYsr1xuurvQ==
   dependencies:
+    escape-string-regexp "^1.0.5"
     lodash.uniq "^4.5.0"
-    millan "^2.0.0"
+    millan "^2.1.1"
     vscode-languageserver "^5.2.1"
 
 stat-mode@^0.2.0:
@@ -1515,16 +1532,6 @@ tunnel-agent@^0.6.0:
   integrity sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0=
   dependencies:
     safe-buffer "^5.0.1"
-
-turtle-language-server@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/turtle-language-server/-/turtle-language-server-2.0.0.tgz#f6029988aeade0359212dcfd10e862848844aaa0"
-  integrity sha512-GdXvtXKw9NhMgb7amWle54Cb+MANLlepm9f6I9BxMoRRx1gTP1R5U1iHbwwiiqlHUzPyaexb3UFdRIps+tKWog==
-  dependencies:
-    class-autobind-decorator "^3.0.1"
-    millan "^2.0.0"
-    stardog-language-utils "^1.1.1"
-    vscode-languageserver "^5.2.1"
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
