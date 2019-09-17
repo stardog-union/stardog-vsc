@@ -33,7 +33,7 @@ describe("SMS Language Server Extension", () => {
         range: [
           {
             line: 0,
-            character: 13
+            character: 12
           },
           {
             line: 0,
@@ -63,5 +63,33 @@ describe("SMS Language Server Extension", () => {
         character: 7
       }
     ]);
+  });
+
+  it("provides snippets", async () => {
+    docUri = vscode.Uri.file(
+      path.join(__dirname, "..", "..", "fixtures", "good", "empty-mapping.sms")
+    );
+    document = await vscode.workspace.openTextDocument(docUri);
+    await vscode.window.showTextDocument(document);
+    await sleep(2000); // let server start
+
+    const completions = (await vscode.commands.executeCommand(
+      "vscode.executeCompletionItemProvider",
+      docUri,
+      new vscode.Position(0, 0)
+    )) as vscode.CompletionList;
+    const normalizedSuggestedCompletion = JSON.parse(JSON.stringify(completions.items[0]));
+    expect(normalizedSuggestedCompletion).to.eql({
+      detail: "Create a basic fill-in-the-blanks SMS2 mapping",
+      documentation:
+        'Inserts a basic mapping in Stardog Mapping Syntax 2 (SMS2) with tabbing functionality and content assistance. For more documentation of SMS2, check out "Help" --> "Stardog Docs".',
+      insertText: {
+        _tabstop: 1,
+        value:
+          "# A basic SMS2 mapping.\nMAPPING$0\nFROM ${1|SQL,JSON,GRAPHQL|} {\n    $2\n}\nTO {\n    $3\n}\nWHERE {\n    $4\n}\n"
+      },
+      label: "basicSMS2Mapping",
+      kind: "Enum"
+    });
   });
 });

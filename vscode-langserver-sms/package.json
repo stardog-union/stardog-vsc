@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "displayName": "Stardog Mapping Syntax 2 (SMS) Language Server",
   "description": "Language intelligence (diagnostics, hover tooltips, etc.) for Stardog Mapping Syntax 2 (SMS)",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "contributors": [
     {
       "name": "Jason Rogers",
@@ -29,6 +29,7 @@
   ],
   "activationEvents": [
     "onLanguage:sms",
+    "onLanguage:sms2",
     "onLanguage:stardog-mapping-syntax"
   ],
   "main": "./out/extension",
@@ -48,7 +49,7 @@
     "typescript": "^2.6.1"
   },
   "dependencies": {
-    "sms-language-server": "^2.0.3",
+    "sms-language-server": "^2.5.0",
     "vscode": "^1.1.26",
     "vscode-languageclient": "^5.2.1"
   },
