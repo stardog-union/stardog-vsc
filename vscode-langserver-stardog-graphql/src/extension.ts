@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
   const server = context.asAbsolutePath(
     path.join(
       "node_modules",
-      "sms-language-server",
+      "stardog-graphql-language-server",
       "dist",
       "cli.js"
     )
@@ -38,22 +38,18 @@ export function activate(context: vscode.ExtensionContext) {
     documentSelector: [
       {
         scheme: "file",
-        language: "sms"
+        language: "graphql"
       },
       {
         scheme: "file",
-        language: "stardog-mapping-syntax"
-      },
-      {
-        scheme: "file",
-        language: "sms2"
+        language: "stardog-graphql"
       }
     ]
   };
 
   client = new LanguageClient(
-    "stardogSmsLanguageServer",
-    "Stardog SMS Language Server",
+    "stardogGraphQlLanguageServer",
+    "Stardog GraphQL Language Server",
     serverOptions,
     clientOptions
   );

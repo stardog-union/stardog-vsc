@@ -10,6 +10,7 @@ Server Protocol.
 - Hover tooltips (identifies entities in SMS grammar and shows "expected"
 symbols in the case of an error)
 - Syntax highlighting (via the `stardog-rdf-grammars` extension)
+- Snippet suggestions
 - Open source
 - No arbitrary code execution
 - Powers some of the core language intelligence capabilities of [Stardog Studio](https://www.stardog.com/studio/)
