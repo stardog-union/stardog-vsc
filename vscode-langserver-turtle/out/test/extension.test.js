@@ -50,24 +50,15 @@ describe("Turtle Language Server Extension", () => {
     it("receives hover help from the server", () => __awaiter(this, void 0, void 0, function* () {
         const hoverHelp = (yield vscode.commands.executeCommand("vscode.executeHoverProvider", docUri, new vscode.Position(0, 0)));
         const normalizedHoverHelp = JSON.parse(JSON.stringify(hoverHelp));
-        chai_1.expect(normalizedHoverHelp).to.eql([
+        chai_1.expect(normalizedHoverHelp[0].contents[0].value).to.eql("```\nprefixID\n```");
+        chai_1.expect(normalizedHoverHelp[0].range).to.eql([
             {
-                contents: [
-                    {
-                        sanitize: true,
-                        value: "```\nprefixID\n```"
-                    }
-                ],
-                range: [
-                    {
-                        line: 0,
-                        character: 0
-                    },
-                    {
-                        line: 0,
-                        character: 7
-                    }
-                ]
+                line: 0,
+                character: 0
+            },
+            {
+                line: 0,
+                character: 7
             }
         ]);
     }));
