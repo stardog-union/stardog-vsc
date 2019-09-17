@@ -47,7 +47,7 @@
     "typescript": "^2.6.1"
   },
   "dependencies": {
-    "sparql-language-server": "^2.0.3",
+    "sparql-language-server": "^2.3.3",
     "vscode": "^1.1.26",
     "vscode-languageclient": "^5.2.1"
   },
