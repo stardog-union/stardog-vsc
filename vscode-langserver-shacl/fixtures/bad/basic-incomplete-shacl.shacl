@@ -1,0 +1,5 @@
+ex:PersonShape
+  a sh:NodeShape ;
+  sh:targetClass ex:Person ;
+  sh:property [
+    sh:
