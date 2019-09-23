@@ -8,10 +8,12 @@ Visual Studio Code syntax highlighting for all your favorite RDF languages, and 
 
 - SPARQL (`.rq`)
 - Turtle (`.ttl`)
+- Trig (`.trig`)
+- SHACL (`.shacl`)
 
 ### Stardog language support:
 
-- Stardog Mapping Syntax (`.sms`)
+- Stardog Mapping Syntax 2 (`.sms`, `.sms2`)
 - Stardog Rules Syntax (`.srs`)
 
 ## Installation

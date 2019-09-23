@@ -3,7 +3,7 @@
   "publisher": "stardog-union",
   "displayName": "Stardog RDF Grammars",
   "description": "Syntax highlighting for SPARQL, Turtle, Stardog Rules Syntax, and other RDF languages",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "license": "Apache-2.0",
   "contributors": [
     {
@@ -60,19 +60,48 @@
       }, {
         "id": "stardog-mapping-syntax",
         "aliases": [
-          "Stardog Mapping Syntax"
+          "SMS",
+          "SMS2",
+          "sms",
+          "sms2",
+          "Stardog Mapping Syntax",
+          "Stardog Mapping Syntax 2"
         ],
         "extensions": [
-          ".sms"
+          ".sms",
+          ".sms2"
         ],
         "configuration": "./language-configuration.json"
       }, {
         "id": "stardog-rules-syntax",
         "aliases": [
+          "SRS",
+          "srs",
           "Stardog Rules Syntax"
         ],
         "extensions": [
           ".srs"
+        ],
+        "configuration": "./language-configuration.json"
+      }, {
+        "id": "shacl",
+        "aliases": [
+          "SHACL",
+          "shacl",
+          "Shapes Constraint Language"
+        ],
+        "extensions": [
+          ".shacl"
+        ],
+        "configuration": "./language-configuration.json"
+      }, {
+        "id": "trig",
+        "aliases": [
+          "TriG",
+          "trig"
+        ],
+        "extensions": [
+          ".trig"
         ],
         "configuration": "./language-configuration.json"
       }
@@ -97,6 +126,16 @@
         "language": "stardog-rules-syntax",
         "scopeName": "source.srs",
         "path": "./syntaxes/stardog-rules.tmLanguage.json"
+      },
+      {
+        "language": "shacl",
+        "scopeName": "source.shacl",
+        "path": "./syntaxes/turtle.tmLanguage.json"
+      },
+      {
+        "language": "trig",
+        "scopeName": "source.trig",
+        "path": "./syntaxes/turtle.tmLanguage.json"
       }
     ]
   }
