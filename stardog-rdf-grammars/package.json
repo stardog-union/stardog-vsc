@@ -135,12 +135,12 @@
       {
         "language": "shacl",
         "scopeName": "source.shacl",
-        "path": "./syntaxes/turtle.tmLanguage.json"
+        "path": "./syntaxes/shacl.tmLanguage.json"
       },
       {
         "language": "trig",
         "scopeName": "source.trig",
-        "path": "./syntaxes/turtle.tmLanguage.json"
+        "path": "./syntaxes/trig.tmLanguage.json"
       }
     ]
   }
