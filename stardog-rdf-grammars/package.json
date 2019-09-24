@@ -46,7 +46,8 @@
           ".sparql"
         ],
         "configuration": "./language-configuration.json"
-      }, {
+      },
+      {
         "id": "turtle",
         "aliases": [
           "TURTLE",
@@ -57,7 +58,8 @@
           ".turtle"
         ],
         "configuration": "./language-configuration.json"
-      }, {
+      },
+      {
         "id": "stardog-mapping-syntax",
         "aliases": [
           "SMS",
@@ -72,7 +74,8 @@
           ".sms2"
         ],
         "configuration": "./language-configuration.json"
-      }, {
+      },
+      {
         "id": "stardog-rules-syntax",
         "aliases": [
           "SRS",
@@ -83,7 +86,8 @@
           ".srs"
         ],
         "configuration": "./language-configuration.json"
-      }, {
+      },
+      {
         "id": "shacl",
         "aliases": [
           "SHACL",
@@ -94,7 +98,8 @@
           ".shacl"
         ],
         "configuration": "./language-configuration.json"
-      }, {
+      },
+      {
         "id": "trig",
         "aliases": [
           "TriG",

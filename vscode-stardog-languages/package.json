@@ -27,8 +27,10 @@
   ],
   "extensionPack": [
     "stardog-union.stardog-rdf-grammars",
+    "stardog-union.vscode-langserver-shacl",
     "stardog-union.vscode-langserver-sms",
     "stardog-union.vscode-langserver-sparql",
-    "stardog-union.vscode-langserver-turtle"
+    "stardog-union.vscode-langserver-turtle",
+    "stardog-union.vscode-langserver-trig"
   ]
 }
