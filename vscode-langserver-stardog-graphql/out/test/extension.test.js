@@ -98,7 +98,6 @@ describe("Stardog GraphQL Language Server Extension", () => {
     // Note that this test and the one above also test error-tolerance, since
     // the language assistance comes after a parse error.
     it("receives completion suggestions from the server", () => __awaiter(this, void 0, void 0, function* () {
-        console.log(document.getText().slice(15));
         const completions = (yield vscode.commands.executeCommand("vscode.executeCompletionItemProvider", docUri, new vscode.Position(1, 14)));
         const normalizedSuggestedCompletion = JSON.parse(JSON.stringify(completions.items));
         chai_1.expect(normalizedSuggestedCompletion).to.eql([

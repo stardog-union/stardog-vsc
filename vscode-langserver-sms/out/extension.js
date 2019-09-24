@@ -27,6 +27,10 @@ function activate(context) {
             {
                 scheme: "file",
                 language: "stardog-mapping-syntax"
+            },
+            {
+                scheme: "file",
+                language: "sms2"
             }
         ]
     };
