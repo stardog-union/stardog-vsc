@@ -4,7 +4,7 @@
   "displayName": "Stardog/RDF Languages Extension Pack",
   "description": "Language intelligence and syntax highlighting for Stardog languages",
   "license": "Apache-2.0",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "contributors": [
     {
       "name": "Jason Rogers",
