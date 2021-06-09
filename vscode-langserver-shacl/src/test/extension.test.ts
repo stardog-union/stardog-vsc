@@ -49,19 +49,14 @@ describe("SHACL Language Server Extension", () => {
       "vscode.executeHoverProvider",
       docUri,
       new vscode.Position(0, 0)
-    )) as vscode.Hover;
-    const normalizedHoverHelp = JSON.parse(JSON.stringify(hoverHelp));
-    expect(normalizedHoverHelp[0].contents[0].value).to.eql("```\nPrefixedName\n```");
-    expect(normalizedHoverHelp[0].range).to.eql([
-      {
-        line: 0,
-        character: 0
-      },
-      {
-        line: 0,
-        character: 14
-      }
-    ]);
+    )) as vscode.Hover[];
+    const { contents } = hoverHelp[0];
+    const range = hoverHelp[0].range as vscode.Range;
+    expect(typeof contents[0] === 'string' ? contents[0] : contents[0].value).to.eql("```\nPrefixedName\n```");
+    expect(range.start.line).to.eql(0);
+    expect(range.start.character).to.eql(0);
+    expect(range.end.line).to.eql(0);
+    expect(range.end.character).to.eql(14);
   });
 
   it("provides completion suggestions", async () => {
