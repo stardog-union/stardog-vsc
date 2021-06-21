@@ -29,7 +29,7 @@ describe("Stardog GraphQL Language Server Extension", () => {
     expect(normalizedReceivedDiagnostics).to.eql([
       {
         severity: "Error",
-        message: "'to' expected.",
+        message: "\tExpected one of the following:\n Name",
         range: [
           {
             line: 1,
@@ -40,7 +40,7 @@ describe("Stardog GraphQL Language Server Extension", () => {
             character: 15
           }
         ],
-        source: "BindDirective"
+        source: "Arguments",
       },
       {
         severity: "Error",
@@ -70,6 +70,20 @@ describe("Stardog GraphQL Language Server Extension", () => {
             character: 1
           }
         ]
+      },
+      {
+        message: "The bind directive requires 1 argument (valid arguments: `to`)",
+        range: [
+          {
+            character: 9,
+            line: 1,
+          },
+          {
+            character: 13,
+            line: 1,
+          }
+        ],
+        severity: "Error",
       }
     ]);
   });
@@ -85,19 +99,14 @@ describe("Stardog GraphQL Language Server Extension", () => {
       "vscode.executeHoverProvider",
       docUri,
       new vscode.Position(0, 19)
-    )) as vscode.Hover;
-    const normalizedHoverHelp = JSON.parse(JSON.stringify(hoverHelp));
-    expect(normalizedHoverHelp[0].contents[0].value).to.eql("```\nPrefixDirective\n```");
-    expect(normalizedHoverHelp[0].range).to.eql([
-      {
-        line: 0,
-        character: 15
-      },
-      {
-        line: 0,
-        character: 35
-      }
-    ]);
+    )) as vscode.Hover[];
+    const { contents } = hoverHelp[0];
+    const range = hoverHelp[0].range as vscode.Range;
+    expect(typeof contents[0] === 'string' ? contents[0] : contents[0].value).to.eql("```\nDirective\n```");
+    expect(range.start.line).to.eql(0);
+    expect(range.start.character).to.eql(14);
+    expect(range.end.line).to.eql(0);
+    expect(range.end.character).to.eql(35);
   });
 
   // Note that this test and the one above also test error-tolerance, since
@@ -111,117 +120,10 @@ describe("Stardog GraphQL Language Server Extension", () => {
     const normalizedSuggestedCompletion = JSON.parse(JSON.stringify(completions.items));
     expect(normalizedSuggestedCompletion).to.eql([
       {
-        label: "first",
-        kind: "EnumMember",
-        insertText: "first",
-        textEdit: {
-          range: [
-            {
-              line: 1,
-              character: 14
-            },
-            {
-              line: 1,
-              character: 14
-            }
-          ],
-          newText: "first"
-        }
-      },
-      {
-        label: "iri",
-        kind: "EnumMember",
-        insertText: "iri",
-        textEdit: {
-          range: [
-            {
-              line: 1,
-              character: 14
-            },
-            {
-              line: 1,
-              character: 14
-            }
-          ],
-          newText: "iri"
-        }
-      },
-      {
-        label: "limit",
-        kind: "EnumMember",
-        insertText: "limit",
-        textEdit: {
-          range: [
-            {
-              line: 1,
-              character: 14
-            },
-            {
-              line: 1,
-              character: 14
-            }
-          ],
-          newText: "limit"
-        }
-      },
-      {
-        label: "offset",
-        kind: "EnumMember",
-        insertText: "offset",
-        textEdit: {
-          range: [
-            {
-              line: 1,
-              character: 14
-            },
-            {
-              line: 1,
-              character: 14
-            }
-          ],
-          newText: "offset"
-        }
-      },
-      {
-        label: "orderBy",
-        kind: "EnumMember",
-        insertText: "orderBy",
-        textEdit: {
-          range: [
-            {
-              line: 1,
-              character: 14
-            },
-            {
-              line: 1,
-              character: 14
-            }
-          ],
-          newText: "orderBy"
-        }
-      },
-      {
-        label: "skip",
-        kind: "EnumMember",
-        insertText: "skip",
-        textEdit: {
-          range: [
-            {
-              line: 1,
-              character: 14
-            },
-            {
-              line: 1,
-              character: 14
-            }
-          ],
-          newText: "skip"
-        }
-      },
-      {
         label: "to",
         kind: "EnumMember",
         insertText: "to",
+        sortText: "to",
         textEdit: {
           range: [
             {
