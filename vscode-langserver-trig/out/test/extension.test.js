@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -15,7 +16,7 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 describe("TriG Language Server Extension", () => {
     let docUri;
     let document;
-    beforeEach(() => __awaiter(this, void 0, void 0, function* () {
+    beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
         const ext = vscode.extensions.getExtension("stardog-union.vscode-langserver-trig");
         yield ext.activate();
         docUri = vscode.Uri.file(path.join(__dirname, "..", "..", "fixtures", "bad", "basic-bad-trig.trig"));
@@ -47,20 +48,15 @@ describe("TriG Language Server Extension", () => {
             }
         ]);
     });
-    it("receives hover help from the server", () => __awaiter(this, void 0, void 0, function* () {
+    it("receives hover help from the server", () => __awaiter(void 0, void 0, void 0, function* () {
         const hoverHelp = (yield vscode.commands.executeCommand("vscode.executeHoverProvider", docUri, new vscode.Position(0, 0)));
-        const normalizedHoverHelp = JSON.parse(JSON.stringify(hoverHelp));
-        chai_1.expect(normalizedHoverHelp[0].contents[0].value).to.eql("```\nblock\n```");
-        chai_1.expect(normalizedHoverHelp[0].range).to.eql([
-            {
-                line: 0,
-                character: 0
-            },
-            {
-                line: 2,
-                character: 1
-            }
-        ]);
+        const { contents } = hoverHelp[0];
+        const range = hoverHelp[0].range;
+        chai_1.expect(typeof contents[0] === 'string' ? contents[0] : contents[0].value).to.eql("```\nblock\n```");
+        chai_1.expect(range.start.line).to.eql(0);
+        chai_1.expect(range.start.character).to.eql(0);
+        chai_1.expect(range.end.line).to.eql(2);
+        chai_1.expect(range.end.character).to.eql(1);
     }));
 });
 //# sourceMappingURL=extension.test.js.map
