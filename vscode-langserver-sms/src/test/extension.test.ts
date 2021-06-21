@@ -29,7 +29,7 @@ describe("SMS Language Server Extension", () => {
     expect(normalizedReceivedDiagnostics).to.eql([
       {
         severity: "Error",
-        message: "\tExpected one of the following:\n Sql\n Json\n GraphQl",
+        message: "Expecting: one of these possible Token sequences:\n  1. [Sql]\n  2. [Json]\n  3. [GraphQl]\n  4. [Csv]\nbut found: ''",
         range: [
           {
             line: 0,
@@ -50,19 +50,14 @@ describe("SMS Language Server Extension", () => {
       "vscode.executeHoverProvider",
       docUri,
       new vscode.Position(0, 0)
-    )) as vscode.Hover;
-    const normalizedHoverHelp = JSON.parse(JSON.stringify(hoverHelp));
-    expect(normalizedHoverHelp[0].contents[0].value).to.eql("```\nMappingDecl\n```");
-    expect(normalizedHoverHelp[0].range).to.eql([
-      {
-        line: 0,
-        character: 0
-      },
-      {
-        line: 0,
-        character: 7
-      }
-    ]);
+    )) as vscode.Hover[];
+    const { contents } = hoverHelp[0];
+    const range = hoverHelp[0].range as vscode.Range;
+    expect(typeof contents[0] === 'string' ? contents[0] : contents[0].value).to.eql("```\nMappingDecl\n```");
+    expect(range.start.line).to.eql(0);
+    expect(range.start.character).to.eql(0);
+    expect(range.end.line).to.eql(0);
+    expect(range.end.character).to.eql(7);
   });
 
   it("provides snippets", async () => {
@@ -89,7 +84,8 @@ describe("SMS Language Server Extension", () => {
           "# A basic SMS2 mapping.\nMAPPING$0\nFROM ${1|SQL,JSON,GRAPHQL|} {\n    $2\n}\nTO {\n    $3\n}\nWHERE {\n    $4\n}\n"
       },
       label: "basicSMS2Mapping",
-      kind: "Enum"
+      kind: "Enum",
+      sortText: "basicSMS2Mapping",
     });
   });
 });

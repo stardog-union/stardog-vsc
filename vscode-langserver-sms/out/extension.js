@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.deactivate = exports.activate = void 0;
 const path = require("path");
 const vscode_languageclient_1 = require("vscode-languageclient");
 let client;
@@ -12,7 +13,7 @@ function activate(context) {
     };
     const serverOptions = {
         run: baseServerOptions,
-        debug: Object.assign({}, baseServerOptions, { 
+        debug: Object.assign(Object.assign({}, baseServerOptions), { 
             // allow attaching VSCode in debug mode:
             options: {
                 execArgv: ["--nolazy", "--inspect=6009"]
