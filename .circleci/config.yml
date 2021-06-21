@@ -8,24 +8,34 @@ jobs:
     working_directory: *working_directory
     steps:
       - checkout
+      # Concatenate lockfiles for caching; this is Circle's recommended strategy here: https://circleci.com/docs/2.0/caching/#restoring-cache
+      - run:
+          name: Concatenate yarn.lock files
+          command: ls -d */ | grep langserver | awk -F . '{printf "\"%syarn.lock\" ", $1}' | xargs cat > concatenated-yarn.lock
       - restore_cache:
           # This caching strategy isn't ideal, but CircleCI's current support for monorepos is poor, and this works well enough
           keys:
           # This branch if available
-          - dependency-cache-{{ .Branch }}-{{ checksum "./vscode-langserver-sms/yarn.lock" }}-{{ checksum "./vscode-langserver-sparql/yarn.lock" }}-{{ checksum "./vscode-langserver-turtle/yarn.lock" }}
+          - dependency-cache-{{ .Branch }}-{{ checksum "concatenated-yarn.lock" }}-{{ checksum "./stardog-rdf-grammars/package.json" }}-{{ checksum "./vscode-stardog-languages/package.json" }}
           # Default branch if not
-          - dependency-cache-develop-{{ checksum "./vscode-langserver-sms/yarn.lock" }}-{{ checksum "./vscode-langserver-sparql/yarn.lock" }}-{{ checksum "./vscode-langserver-turtle/yarn.lock" }}
+          - dependency-cache-develop-{{ checksum "concatenated-yarn.lock" }}-{{ checksum "./stardog-rdf-grammars/package.json" }}-{{ checksum "./vscode-stardog-languages/package.json" }}
       - run:
           name: Install Node Modules
           command: |
+            cd ~/stardog-vsc/vscode-langserver-shacl && yarn
             cd ~/stardog-vsc/vscode-langserver-sms && yarn
             cd ~/stardog-vsc/vscode-langserver-sparql && yarn
+            cd ~/stardog-vsc/vscode-langserver-stardog-graphql && yarn
+            cd ~/stardog-vsc/vscode-langserver-trig && yarn
             cd ~/stardog-vsc/vscode-langserver-turtle && yarn
       - save_cache:
-          key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "./vscode-langserver-sms/yarn.lock" }}-{{ checksum "./vscode-langserver-sparql/yarn.lock" }}-{{ checksum "./vscode-langserver-turtle/yarn.lock" }}
+          key: dependency-cache-{{ .Branch }}-{{ checksum "concatenated-yarn.lock" }}-{{ checksum "./stardog-rdf-grammars/package.json" }}-{{ checksum "./vscode-stardog-languages/package.json" }}
           paths:
+          - ./vscode-langserver-shacl/node_modules
           - ./vscode-langserver-sms/node_modules
           - ./vscode-langserver-sparql/node_modules
+          - ./vscode-langserver-stardog-graphql/node_modules
+          - ./vscode-langserver-trig/node_modules
           - ./vscode-langserver-turtle/node_modules
       - persist_to_workspace:
           root: .
@@ -43,8 +53,11 @@ jobs:
           name: Tests
           command: |
             cp -R ~/stardog-vsc/stardog-rdf-grammars ~/stardog-vsc/stardog-union.stardog-rdf-grammars
+            cd ~/stardog-vsc/vscode-langserver-shacl && yarn run test
             cd ~/stardog-vsc/vscode-langserver-sms && yarn run test
             cd ~/stardog-vsc/vscode-langserver-sparql && yarn run test
+            cd ~/stardog-vsc/vscode-langserver-stardog-graphql && yarn run test
+            cd ~/stardog-vsc/vscode-langserver-trig && yarn run test
             cd ~/stardog-vsc/vscode-langserver-turtle && yarn run test
   
 workflows:
