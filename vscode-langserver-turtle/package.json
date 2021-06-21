@@ -42,14 +42,15 @@
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/mocha": "^2.2.42",
-    "@types/node": "^8.10.25",
+    "@types/node": "^15.12.4",
     "chai": "^4.2.0",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.1"
+    "typescript": "^4.3.4"
   },
   "dependencies": {
     "srs-language-server": "^1.3.3",
-    "vscode": "^1.1.26",
+    "turtle-language-server": "^3.4.0",
+    "vscode": "^1.1.37",
     "vscode-languageclient": "^5.2.1"
   },
   "extensionDependencies": [
