@@ -44,11 +44,11 @@
     "@types/node": "^8.10.25",
     "chai": "^4.2.0",
     "tslint": "^5.8.0",
-    "typescript": "^4.3.2"
+    "typescript": "^4.3.2",
+    "vscode": "^1.1.37"
   },
   "dependencies": {
     "shacl-language-server": "^1.5.0",
-    "vscode": "^1.1.37",
     "vscode-languageclient": "^5.2.1"
   },
   "extensionDependencies": [
