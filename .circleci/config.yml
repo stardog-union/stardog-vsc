@@ -16,9 +16,9 @@ jobs:
           # This caching strategy isn't ideal, but CircleCI's current support for monorepos is poor, and this works well enough
           keys:
           # This branch if available
-          - dependency-cache-{{ .Branch }}-{{ checksum "concatenated-yarn.lock" }}-{{ checksum "./stardog-rdf-grammars/package.json" }}-{{ checksum "./vscode-stardog-languages/package.json" }}
+          - dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "concatenated-yarn.lock" }}-{{ checksum "./stardog-rdf-grammars/package.json" }}-{{ checksum "./vscode-stardog-languages/package.json" }}
           # Default branch if not
-          - dependency-cache-develop-{{ checksum "concatenated-yarn.lock" }}-{{ checksum "./stardog-rdf-grammars/package.json" }}-{{ checksum "./vscode-stardog-languages/package.json" }}
+          - dependency-cache-{{ .Environment.CACHE_VERSION }}-develop-{{ checksum "concatenated-yarn.lock" }}-{{ checksum "./stardog-rdf-grammars/package.json" }}-{{ checksum "./vscode-stardog-languages/package.json" }}
       - run:
           name: Install Node Modules
           command: |
@@ -29,7 +29,7 @@ jobs:
             cd ~/stardog-vsc/vscode-langserver-trig && yarn
             cd ~/stardog-vsc/vscode-langserver-turtle && yarn
       - save_cache:
-          key: dependency-cache-{{ .Branch }}-{{ checksum "concatenated-yarn.lock" }}-{{ checksum "./stardog-rdf-grammars/package.json" }}-{{ checksum "./vscode-stardog-languages/package.json" }}
+          key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "concatenated-yarn.lock" }}-{{ checksum "./stardog-rdf-grammars/package.json" }}-{{ checksum "./vscode-stardog-languages/package.json" }}
           paths:
           - ./vscode-langserver-shacl/node_modules
           - ./vscode-langserver-sms/node_modules
