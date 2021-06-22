@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "displayName": "GraphQL Language Server (with Stardog extensions)",
   "description": "Language intelligence (autocomplete, diagnostics, etc.) for GraphQL (with Stardog extensions)",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "contributors": [
     {
       "name": "Jason Rogers",
