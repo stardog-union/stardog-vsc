@@ -50,9 +50,6 @@ export function activate(context: vscode.ExtensionContext) {
     clientOptions
   );
 
-  console.log(client);
-  process.stdout.write(client.toString());
-  process.stderr.write(client.toString());
   client.start();
 }
 
