@@ -4,7 +4,7 @@ references:
 jobs:
   build:
     docker:
-      - image: circleci/node:8.9-stretch-browsers
+      - image: circleci/node:14.17.1-stretch-browsers
     working_directory: *working_directory
     steps:
       - checkout
@@ -44,7 +44,7 @@ jobs:
 
   test:
     docker:
-      - image: circleci/node:8.9-stretch-browsers
+      - image: circleci/node:14.17.1-stretch-browsers
     working_directory: *working_directory
     steps:
       - attach_workspace:
