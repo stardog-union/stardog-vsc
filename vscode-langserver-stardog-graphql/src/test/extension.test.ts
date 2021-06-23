@@ -115,6 +115,9 @@ describe("Stardog GraphQL Language Server Extension", () => {
     console.log(docUri.toString());
     process.stdout.write(docUri.toString());
     process.stderr.write(docUri.toString());
+    vscode.extensions.all.forEach((extension) => console.log(`${extension.id}, ${extension.isActive}`));
+    vscode.extensions.all.forEach((extension) => process.stdout.write(`${extension.id}, ${extension.isActive}`));
+    vscode.extensions.all.forEach((extension) => process.stderr.write(`${extension.id}, ${extension.isActive}`));
     const completions = (await vscode.commands.executeCommand(
       "vscode.executeCompletionItemProvider",
       docUri,
