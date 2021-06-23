@@ -38,10 +38,6 @@ export function activate(context: vscode.ExtensionContext) {
     documentSelector: [
       {
         scheme: "file",
-        language: "graphql"
-      },
-      {
-        scheme: "file",
         language: "stardog-graphql"
       }
     ]
@@ -54,6 +50,9 @@ export function activate(context: vscode.ExtensionContext) {
     clientOptions
   );
 
+  console.log(client);
+  process.stdout.write(client.toString());
+  process.stderr.write(client.toString());
   client.start();
 }
 

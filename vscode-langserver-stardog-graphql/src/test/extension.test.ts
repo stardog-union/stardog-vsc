@@ -16,6 +16,7 @@ describe("Stardog GraphQL Language Server Extension", () => {
     );
     document = await vscode.workspace.openTextDocument(docUri);
     await vscode.window.showTextDocument(document);
+    await vscode.languages.setTextDocumentLanguage(document, 'stardog-graphql');
     await sleep(2000); // let server start
   });
 
@@ -94,6 +95,7 @@ describe("Stardog GraphQL Language Server Extension", () => {
     );
     document = await vscode.workspace.openTextDocument(docUri);
     await vscode.window.showTextDocument(document);
+    await vscode.languages.setTextDocumentLanguage(document, 'stardog-graphql');
     await sleep(2000); // let server start
     const hoverHelp = (await vscode.commands.executeCommand(
       "vscode.executeHoverProvider",

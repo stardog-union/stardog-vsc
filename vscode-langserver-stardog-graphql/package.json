@@ -27,8 +27,22 @@
     "Linters",
     "Other"
   ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "stardog-graphql",
+        "aliases": [
+          "GraphQL",
+          "Stardog GraphQL"
+        ],
+        "extensions": [
+          ".graphql",
+          ".stardog-graphql"
+        ]
+      }
+    ]
+  },
   "activationEvents": [
-    "onLanguage:graphql",
     "onLanguage:stardog-graphql"
   ],
   "main": "./out/extension",
