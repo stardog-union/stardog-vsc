@@ -3,7 +3,7 @@
   "publisher": "stardog-union",
   "displayName": "Stardog RDF Grammars",
   "description": "Syntax highlighting for SPARQL, Turtle, Stardog Rules Syntax, and other RDF languages",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "license": "Apache-2.0",
   "contributors": [
     {
@@ -88,6 +88,20 @@
         "configuration": "./language-configuration.json"
       },
       {
+        "id": "stardog-graphql",
+        "aliases": [
+          "GraphQL",
+          "graphql",
+          "Stardog GraphQL"
+        ],
+        "extensions": [
+          ".gql",
+          ".graphql",
+          ".stardog-graphql"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
         "id": "shacl",
         "aliases": [
           "SHACL",
@@ -133,6 +147,11 @@
         "path": "./syntaxes/stardog-rules.tmLanguage.json"
       },
       {
+        "language": "stardog-graphql",
+        "scopeName": "source.stardog-graphql",
+        "path": "./syntaxes/stardog-graphql.tmLanguage.json"
+      },
+      {
         "language": "shacl",
         "scopeName": "source.shacl",
         "path": "./syntaxes/shacl.tmLanguage.json"
@@ -143,5 +162,8 @@
         "path": "./syntaxes/trig.tmLanguage.json"
       }
     ]
-  }
+  },
+  "extensionDependencies": [
+    "GraphQL.vscode-graphql"
+  ]
 }

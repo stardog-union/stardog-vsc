@@ -1,0 +1,5 @@
+query MyQuery @prefix(test: "test") {
+    test_Something {
+        name @optional
+    }
+}
