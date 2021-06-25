@@ -20,7 +20,13 @@ function main() {
             const vscodeExecutablePath = yield vscode_test_1.downloadAndUnzipVSCode();
             const cliPath = vscode_test_1.resolveCliPathFromVSCodeExecutablePath(vscodeExecutablePath);
             // Use cp.spawn / cp.exec for custom setup
-            cp.spawnSync(cliPath, ["--disable-extensions", "--install-extension", "GraphQL.vscode-graphql", "--force"], {
+            cp.spawnSync(cliPath, [
+                "--disable-gpu",
+                "--disable-extensions",
+                "--install-extension",
+                "GraphQL.vscode-graphql",
+                "--force",
+            ], {
                 encoding: "utf-8",
                 stdio: "inherit",
             });
