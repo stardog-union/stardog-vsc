@@ -14,7 +14,7 @@ async function main() {
     const cliPath = resolveCliPathFromVSCodeExecutablePath(vscodeExecutablePath);
 
     // Use cp.spawn / cp.exec for custom setup
-    cp.spawnSync(cliPath, ["--install-extension", "GraphQL.vscode-graphql", "--force"], {
+    cp.spawnSync(cliPath, ["--disable-gpu", "--disable-gpu-compositing", "--disable-software-compositing-fallback", "--verbose", "--disable-extensions", "--install-extension", "GraphQL.vscode-graphql", "--force", "--crash-reporter-directory", "/tmp/vscode-crash"], {
       encoding: "utf-8",
       stdio: "inherit",
     });
