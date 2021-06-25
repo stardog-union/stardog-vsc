@@ -12,8 +12,7 @@ async function main() {
       launchArgs: [
         "--disable-gpu",
         "--disable-extensions",
-        "--install-extension",
-        "GraphQL.vscode-graphql",
+        "--install-extension GraphQL.vscode-graphql",
         "--force",
       ],
       // Use the specified `code` executable
