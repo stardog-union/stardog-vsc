@@ -14,10 +14,20 @@ async function main() {
     const cliPath = resolveCliPathFromVSCodeExecutablePath(vscodeExecutablePath);
 
     // Use cp.spawn / cp.exec for custom setup
-    cp.spawnSync(cliPath, ["--disable-gpu", "--disable-gpu-compositing", "--disable-software-compositing-fallback", "--verbose", "--disable-extensions", "--install-extension", "GraphQL.vscode-graphql", "--force", "--crash-reporter-directory", "/tmp/vscode-crash"], {
-      encoding: "utf-8",
-      stdio: "inherit",
-    });
+    cp.spawnSync(
+      cliPath,
+      [
+        "--disable-gpu",
+        "--disable-extensions",
+        "--install-extension",
+        "GraphQL.vscode-graphql",
+        "--force",
+      ],
+      {
+        encoding: "utf-8",
+        stdio: "inherit",
+      }
+    );
 
     // Run the extension test
     await runTests({
