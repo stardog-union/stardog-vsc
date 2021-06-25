@@ -1,8 +1,5 @@
 import * as path from "path";
-import {
-  downloadAndUnzipVSCode,
-  runTests,
-} from "vscode-test";
+import { downloadAndUnzipVSCode, runTests } from "vscode-test";
 
 async function main() {
   try {

@@ -1,36 +1,21 @@
-import * as cp from "child_process";
 import * as path from "path";
-import {
-  downloadAndUnzipVSCode,
-  runTests,
-  resolveCliPathFromVSCodeExecutablePath,
-} from "vscode-test";
+import { downloadAndUnzipVSCode, runTests } from "vscode-test";
 
 async function main() {
   try {
     const extensionDevelopmentPath = path.resolve(__dirname, "../../../");
     const extensionTestsPath = path.resolve(__dirname, "./index");
     const vscodeExecutablePath = await downloadAndUnzipVSCode();
-    const cliPath = resolveCliPathFromVSCodeExecutablePath(vscodeExecutablePath);
 
-    // Use cp.spawn / cp.exec for custom setup
-    cp.spawnSync(
-      cliPath,
-      [
+    // Run the extension test
+    await runTests({
+      launchArgs: [
         "--disable-gpu",
         "--disable-extensions",
         "--install-extension",
         "GraphQL.vscode-graphql",
         "--force",
       ],
-      {
-        encoding: "utf-8",
-        stdio: "inherit",
-      }
-    );
-
-    // Run the extension test
-    await runTests({
       // Use the specified `code` executable
       vscodeExecutablePath,
       // @ts-ignore: vscode-test types aren't right
