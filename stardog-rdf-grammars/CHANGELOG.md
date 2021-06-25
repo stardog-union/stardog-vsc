@@ -1,9 +1,6 @@
 # Change Log
 All notable changes to the "stardog-rdf-grammars" extension will be documented in this file.
 
-## [0.2.0]
-- Add Stardog GraphQL language (depending on VSCode GraphQL extension)
-
 ## [0.1.2]
 - Update highlighting for new grammars
 
