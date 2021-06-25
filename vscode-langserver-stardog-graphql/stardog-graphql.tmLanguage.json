@@ -1,0 +1,12 @@
+{
+  "name": "Stardog GraphQL",
+  "scopeName": "source.stardog-graphql",
+  "fileTypes": [
+    "gql",
+    "graphql",
+    "stardog-graphql"
+  ],
+  "patterns": [
+    { "include": "source.graphql" }
+  ]
+}

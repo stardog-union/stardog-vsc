@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "displayName": "GraphQL Language Server (with Stardog extensions)",
   "description": "Language intelligence (autocomplete, diagnostics, etc.) for GraphQL (with Stardog extensions)",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "contributors": [
     {
       "name": "Jason Rogers",
@@ -27,6 +27,31 @@
     "Linters",
     "Other"
   ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "stardog-graphql",
+        "aliases": [
+          "GraphQL",
+          "graphql",
+          "Stardog GraphQL"
+        ],
+        "extensions": [
+          ".gql",
+          ".graphql",
+          ".stardog-graphql"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "stardog-graphql",
+        "scopeName": "source.stardog-graphql",
+        "path": "./stardog-graphql.tmLanguage.json"
+      }
+    ]
+  },
   "activationEvents": [
     "onLanguage:graphql",
     "onLanguage:stardog-graphql"
@@ -54,6 +79,6 @@
     "vscode-languageclient": "^5.2.1"
   },
   "extensionDependencies": [
-    "stardog-union.stardog-rdf-grammars"
+    "GraphQL.vscode-graphql"
   ]
 }
