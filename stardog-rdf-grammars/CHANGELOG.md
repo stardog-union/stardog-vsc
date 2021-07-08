@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to the "stardog-rdf-grammars" extension will be documented in this file.
 
+## [0.1.3] - 2021-07-08
+### Added
+- `.sq` extension for sparql
+
 ## [0.1.2]
 - Update highlighting for new grammars
 
