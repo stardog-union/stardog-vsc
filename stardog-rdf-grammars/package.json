@@ -55,7 +55,8 @@
         ],
         "extensions": [
           ".ttl",
-          ".turtle"
+          ".turtle",
+          ".acl"
         ],
         "configuration": "./language-configuration.json"
       },
