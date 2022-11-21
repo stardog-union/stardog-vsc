@@ -3,7 +3,8 @@
   "scopeName": "source.sparql",
   "fileTypes": [
     "rq",
-    "sparql"
+    "sparql",
+    "sq"
   ],
   "patterns": [
     { "include": "source.turtle" },
