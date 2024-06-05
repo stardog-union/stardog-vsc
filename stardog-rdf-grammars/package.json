@@ -143,6 +143,46 @@
         "language": "trig",
         "scopeName": "source.trig",
         "path": "./syntaxes/trig.tmLanguage.json"
+      },
+      {
+        "scopeName": "markdown.sparql.codeblock",
+        "path": "./syntaxes/markdown-injection/markdown-sparql.tmLanguage.json",
+        "injectTo": [
+            "text.html.markdown"
+          ],
+        "embeddedLanguages": {
+            "meta.embedded.block.sparql": "sparql"
+        }
+      },
+      {
+        "scopeName": "markdown.turtle.codeblock",
+        "path": "./syntaxes/markdown-injection/markdown-turtle.tmLanguage.json",
+        "injectTo": [
+            "text.html.markdown"
+          ],
+        "embeddedLanguages": {
+            "meta.embedded.block.turtle": "turtle"
+        }
+      },
+      {
+        "scopeName": "markdown.trig.codeblock",
+        "path": "./syntaxes/markdown-injection/markdown-trig.tmLanguage.json",
+        "injectTo": [
+            "text.html.markdown"
+          ],
+        "embeddedLanguages": {
+            "meta.embedded.block.trig": "trig"
+        }
+      },
+      {
+        "scopeName": "markdown.shacl.codeblock",
+        "path": "./syntaxes/markdown-injection/markdown-shacl.tmLanguage.json",
+        "injectTo": [
+            "text.html.markdown"
+          ],
+        "embeddedLanguages": {
+            "meta.embedded.block.shacl": "shacl"
+        }
       }
     ]
   }
