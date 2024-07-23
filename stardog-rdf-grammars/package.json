@@ -111,6 +111,28 @@
           ".trig"
         ],
         "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "n-triples",
+        "aliases": [
+          "ntriples",
+          "N-Triples"
+        ],
+        "extensions": [
+          ".nt"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "n-quads",
+        "aliases": [
+          "nquads",
+          "N-Quads"
+        ],
+        "extensions": [
+          ".nq"
+        ],
+        "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [
